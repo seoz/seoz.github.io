@@ -7,7 +7,6 @@
 
 [ Web Site]
 - 대표도메인 http://www.seoz.com
-- 이글루스 블로그 http://seoz.egloos.com/
 - 개인 블로그 http://blog.naver.com/seojuyung
 - Facebook http://www.facebook.com/seojuyung
 - 트위터 http://www.twitter.com/seojuyung
@@ -18,6 +17,7 @@
 - StackOverflow http://stackoverflow.com/users/3458104/seoz
 - 미니홈피 http://www.cyworld.com/seoz/ (미사용)
 - 미투데이 http://me2day.net/seoz (미사용)
+- 이글루스 블로그 http://seoz.egloos.com/ (이글루스 서비스종료)
 
 [취미]
 - 드럼, 오픈소스 활동, 바이크 라이딩, 농구, 축구, 수영, 책사기, 아이 돌보기, 프로그래밍, 사물놀이
