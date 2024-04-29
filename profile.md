@@ -91,16 +91,20 @@
 
 [기고/발표/인터뷰]
 
+<2024>
+- 2024.04.27 - 링글 커리어업 웨비나, "영알못이 실리콘밸리에서 구글 글로벌팀장이 되기까지"
+- 2024.04.23 - YouTube Partner Summit 2024 발표 (한국, 그랜드 인터컨티넨털 서울 파르나스 호텔) - "NFL Sunday Ticket"
+
 <2023>
 - 2023.06.13 - 아주대학교 SW커리어세미나 강의 "서주영 선배에게 듣는 커리어 세미나"
-- 2023.04.28 - YouTube Partner Summit 2023 발표 (한국 코엑스)
+- 2023.04.28 - YouTube Device Partner Summit 2023 발표 (한국 코엑스) - "Collaborations on Industry Innovations"
 - 2023.04.13 - 국민대학교 산업체 특강 강의 "서주영 엔지니어에게 듣는 썰"
 
 <2022>
 - 2022.12.23 - 삼성전자 SWITCH 사무국 세미나 발표, "내가 경험한 삼성과 구글의 문화"
 - 2022.10 - 삼성전자 Gen Z Lab 인터뷰
 - 2022.08.06 - Ringle Meetup @ San Mateo 2022 - 연사 패널 참석
-- 2022.05.19 - YouTube Partner Summit 발표 (미국 실리콘밸리 유튜브 본사)
+- 2022.05.19 - YouTube Device Partner Summit 2022 발표 (미국 실리콘밸리 유튜브 본사) - "Technical Requirements Overview"
 - 2022.03 - 코리아데일리타임즈 인터뷰
 - 2022.01 - 광고 출연 [링글러이야기] 구글 YouTube 엔지니어가 링글을 선택한 이유 (유튜브 영상)
 
