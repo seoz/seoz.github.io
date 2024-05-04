@@ -75,7 +75,7 @@
 - 1996 ~ 1998 창현 고등학교 11회
 
 [경력]
-- 2015.3 ~ 구글 유튜브 파트너 엔지니어링 매니저 (Staff Partner Engineering Manager, 이사/수석부장)
+- 2015.3 ~ 구글 유튜브 파트너 엔지니어링 매니저 (Senior Staff Partner Engineering Manager, 이사/수석부장)
 - 2013.12 ~ 2014.11 정보통신산업진흥원(NIPA) 주관 오픈프론티어 사업 멘토
 - 2013.3~2013.10 삼성전자 오픈소스 멘토링 프로그램 EFL 멘토 (우수상)
 - 2011.2 CeBIT 2013 (독일) 전시회 내 오픈소스 Enlightenment 부스 운영 및 데모
@@ -97,6 +97,7 @@
 - 2024.04.23 - YouTube Partner Summit 2024 발표 (한국, 그랜드 인터컨티넨털 서울 파르나스 호텔) - "NFL Sunday Ticket"
 
 <2023>
+- 2023.07.26 - KIC 실리콘밸리, 숭실대 스파르탄SW 강의, "컴퓨터 공학도가 실리콘밸리에서 글로벌팀장이 되기까지"
 - 2023.06.13 - 아주대학교 SW커리어세미나 강의 "서주영 선배에게 듣는 커리어 세미나"
 - 2023.04.28 - YouTube Device Partner Summit 2023 발표 (한국 코엑스) - "Collaborations on Industry Innovations"
 - 2023.04.13 - 국민대학교 산업체 특강 강의 "서주영 엔지니어에게 듣는 썰"
