@@ -119,7 +119,7 @@
 - 2020.01.25 - KIC 실리콘밸리 SW마에스트로 글로벌SW역량 교육 "오픈소스 개발자가 실리콘밸리에서 팀리드가 되기까지" 강의
 
 <2019>
-- 2019.07.20 - 홍정모 님 유튜브 채널 초대 방송 출연 ([전체 영상](https://www.youtube.com/watch?v=_rUqBN4-pt8), 편집 영상 - 유튜브 본사에 오기까지, 편집 영상 - 영어 공부) 
+- 2019.07.20 - 홍정모 님 유튜브 채널 초대 방송 출연 ([전체 영상](https://www.youtube.com/watch?v=_rUqBN4-pt8), [편집 영상 - 어떻게 준비해야 미국 구글에서 일할 수 있을까요?](https://www.youtube.com/watch?v=lnbYdqf2T4Y), [편집 영상 - 영어공부 이렇게 하면 유튜브 본사 취직할 수 있다](https://www.youtube.com/watch?v=V0190bveFWM)) 
 - 2019.07.19 - KIC 실리콘밸리 스파르탄 SW 교육원 "오픈소스 개발자가 실리콘밸리에 오기까지" 강의
 
 <2018>
@@ -153,7 +153,7 @@
 - 2015.01.14 - Z1 런칭 기념 파트너 행사 (인도 방갈로) - "Tizen App Development (Web and Native)" 발표
 
 <2014>
-- 2014.12.23 Tizen 공식 웹사이트에 Tizen Webinar 공개 - "Native UI Application Development" 발표
+- 2014.12.23 Tizen 공식 웹사이트에 Tizen Webinar 공개 - "Native UI Application Development" 발표 ([웹사이트](https://developer.tizen.org/development/articles/native-ui-application-development), [비디오](https://www.youtube.com/watch?v=lBiuyJFgB60))
 - 2014.12.02 2014 Developer Day 참석 및 "EFL 한국 커뮤니티" 소개 발표
 - 2014.11.19 온라인 컨텐츠 강의 녹화 - "Tizen 핵심 툴킷 EFL로 빠르고 가벼운 앱 개발하기"
 - 2014.11.15 제 4회 대한민국 커뮤니티 데이 (서울 D.Camp) - "EFL을 이용한 타이젠 애플리케이션 개발" 발표 (박춘언님과 공동 발표)
@@ -163,7 +163,7 @@
 - 2014.9.24 사내 팀 월례회 - "오픈소스 컨트리뷰션" 발표
 - 2014.9.16 SOSCON 2014 행사 (서울) - "Tizen 핵심 툴킷 EFL로 빠르고 가벼운 앱 개발하기" 발표
 - 2014.7.23 OSCON 2014 행사 (포틀랜드, 미국) - The Art of Tizen UI Theme Technology 발표
-- 2014.6.28 OSS개발자 포럼 "Open Source 개발자 이야기" 세미나 - "오픈소스와 영어" 발표 (발표 영상)
+- 2014.6.28 OSS개발자 포럼 "Open Source 개발자 이야기" 세미나 - "오픈소스와 영어" 발표 ([발표 영상](https://www.youtube.com/watch?v=pkjnpTH0IwU))
 - 2014.6.3 타이젠 개발자 컨퍼런스 2014 (샌프란시스코, 미국) - The Art of Tizen UI Theme Technology 발표
 - 2014.4.25 삼성전자 오픈소스 프론티어 프로그램 "EFL 오픈소스 컨트리뷰션 코드리뷰" 발표
 - 2014.3.14 삼성전자 첨기연 Open Source Fundamentals 중 EFL 활용 사례 발표
