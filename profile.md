@@ -75,7 +75,7 @@
 - 1996 ~ 1998 창현 고등학교 11회
 
 [경력]
-- 2015.3 ~ 구글 유튜브 파트너 엔지니어링 매니저 (Senior Staff Partner Engineering Manager, 이사/수석부장)
+- 2015.3 ~ 구글 유튜브 파트너 엔지니어링 매니저 (Senior Staff Partner Engineering Manager, 글로벌팀장/상무)
 - 2013.12 ~ 2014.11 정보통신산업진흥원(NIPA) 주관 오픈프론티어 사업 멘토
 - 2013.3~2013.10 삼성전자 오픈소스 멘토링 프로그램 EFL 멘토 (우수상)
 - 2011.2 CeBIT 2013 (독일) 전시회 내 오픈소스 Enlightenment 부스 운영 및 데모
