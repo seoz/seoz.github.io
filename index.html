@@ -1,11 +1,80 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="style.css"></style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Juyung Seo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .language-selection {
+            text-align: center;
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .language-selection h1 {
+            margin-bottom: 20px;
+        }
+        .language-selection button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .language-selection button:hover {
+            background-color: #ddd;
+        }
+        .language-box {
+            border: 2px solid #3498db;
+            padding: 20px 20px;
+            margin: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }   
+                
+        .language-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-box h2 {
+            margin: 0;
+            font-size: 2em;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-
-<img id="avatar" src="seoz.jpg">
-
+    <div class="language-selection">
+	<img src="seoz2.jpg" alt="Daniel Juyung Seo">
+        <h1>Welcome to Daniel’s website</h1>
+    	<div class="language-box" onclick="selectLanguage('en')">
+        	<h2>English</h2>
+    	</div>
+    	<div class="language-box" onclick="selectLanguage('ko')">
+        	<h2>한국어</h2>
+    	</div>
+    </div>
+    <script>
+        function selectLanguage(lang) {
+            localStorage.setItem('selectedLanguage', lang);
+            window.location.href = 'profile.html';
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Daniel Juyung Seo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-container img {
+            display: block;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+        }
+        .profile-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-container .language-switcher {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-container .language-switcher button {
+            font-size: 16px;
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .profile-container .language-switcher button:hover {
+            background-color: #ddd;
+        }
+        .profile-content {
+            line-height: 1.6;
+        }
+        .language-box {
+            border: 2px solid #3498db;
+            padding: 10px 20px;
+            margin: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-box h2 {
+            margin: 0;
+            font-size: 1em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <img src="seoz3.jpg" alt="Daniel Juyung Seo">
+        <h1 id="profile-name">Daniel Juyung Seo</h1>
+        <div class="language-switcher">
+	        <div class="language-box" onclick="switchLanguage('en')">
+                	<h2>English</h2>
+        	</div>
+        	<div class="language-box" onclick="switchLanguage('ko')">
+                	<h2>한국어</h2>
+        	</div>
+        </div>
+        <div id="profile-content" class="profile-content">
+            <!-- Profile content will be loaded here based on the selected language -->
+        </div>
+    </div>
+    <script>
+        function switchLanguage(lang) {
+            localStorage.setItem('selectedLanguage', lang);
+            loadProfile();
+        }
+
+        function loadProfile() {
+            const lang = localStorage.getItem('selectedLanguage') || 'en';
+            const profileName = document.getElementById('profile-name');
+            const profileContent = document.getElementById('profile-content');
+            
+            if (lang === 'en') {
+                profileName.textContent = 'Daniel Juyung Seo';
+                profileContent.innerHTML = `
+                    <p>Global Head of Partner Innovations & Engagement at YouTube Device Ops & Partner Engineering, Google</p>
+                    <p>(Senior Staff Partner Engineering Manager)</p>
+                    <p>Based in Silicon Valley, California, USA.</p>
+                    <p>For more details, visit my <a href="https://www.linkedin.com/in/seoz/" target="_blank">LinkedIn profile</a>.</p>
+                `;
+            } else {
+                profileName.textContent = '서주영';
+                profileContent.innerHTML = `
+                    <p>구글 유튜브 파트너 엔지니어링 글로벌팀장.</p>
+                    <p>미국 캘리포니아 실리콘밸리에 거주.</p>
+                    <p>더 많은 정보를 보려면 <a href="https://raw.githubusercontent.com/seoz/seoz.github.io/refs/heads/master/profile.md" target="_blank">프로필</a>을 방문하세요.</p>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+</html>
