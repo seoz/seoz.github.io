@@ -3,78 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel Juyung Seo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
-        .language-selection {
-            text-align: center;
-            background-color: #fff;
-            padding: 50px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .language-selection h1 {
-            margin-bottom: 20px;
-        }
-        .language-selection button {
-            font-size: 18px;
-            padding: 10px 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .language-selection button:hover {
-            background-color: #ddd;
-        }
-        .language-box {
-            border: 2px solid #3498db;
-            padding: 20px 20px;
-            margin: 20px;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: inline-block;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }   
-                
-        .language-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .language-box h2 {
-            margin: 0;
-            font-size: 2em;
-            color: #333;
-        }
-    </style>
+    <title>Daniel Juyung Seo - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Add marked.js for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <div class="language-selection">
-	<img src="seoz2.jpg" alt="Daniel Juyung Seo">
-        <h1>Welcome to Daniel’s website</h1>
-    	<div class="language-box" onclick="selectLanguage('en')">
-        	<h2>English</h2>
-    	</div>
-    	<div class="language-box" onclick="selectLanguage('ko')">
-        	<h2>한국어</h2>
-    	</div>
+    <div class="container">
+        <header class="header">
+            <div class="profile-image">
+                <img src="seoz3.jpg" alt="Daniel Juyung Seo">
+            </div>
+            <h1>Daniel Juyung Seo</h1>
+            <p class="title">Global Head of Partner Innovations & Engagement</p>
+            <p class="subtitle">YouTube Device Ops & Partner Engineering, Google</p>
+            
+            <div class="language-selector">
+                <button onclick="selectLanguage('en')" class="lang-btn active" data-lang="en">English</button>
+                <button onclick="selectLanguage('ko')" class="lang-btn" data-lang="ko">한국어</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="about" id="about">
+                <h2 data-en="About Me" data-ko="소개">About Me</h2>
+                <div class="profile-content">
+                    <p data-en="Based in Silicon Valley, California, I lead global partner innovations and engagement at YouTube Device Ops & Partner Engineering, Google. With extensive experience in technology and partner management, I drive strategic initiatives and foster meaningful partnerships in the digital ecosystem." 
+                       data-ko="미국 캘리포니아 실리콘밸리에 거주하며, 구글 유튜브 파트너 엔지니어링 글로벌팀장으로서 혁신적인 파트너십을 이끌고 있습니다. 기술과 파트너 관리 분야의 풍부한 경험을 바탕으로 디지털 생태계에서의 전략적 이니셔티브를 주도하고 의미 있는 파트너십을 구축하고 있습니다."></p>
+                    
+                    <div id="detailed-profile" class="detailed-profile" data-ko-only="true">
+                        <!-- Profile.md content will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <section class="contact" id="contact">
+                <h2 data-en="Connect" data-ko="연락처">Connect</h2>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/seoz/" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/seoz" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Daniel Juyung Seo. All rights reserved.</p>
+        </footer>
     </div>
+
     <script>
+        async function loadProfileMd() {
+            const profileContainer = document.getElementById('detailed-profile');
+            profileContainer.innerHTML = '<div class="loading">프로필을 불러오는 중...</div>';
+            
+            try {
+                const response = await fetch('profile.md', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/plain'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const markdown = await response.text();
+                if (!markdown) {
+                    throw new Error('Empty profile content');
+                }
+
+                // Configure marked options
+                marked.setOptions({
+                    breaks: true,  // Convert line breaks to <br>
+                    gfm: true,     // GitHub Flavored Markdown
+                    headerIds: true // Add IDs to headers
+                });
+
+                const html = marked.parse(markdown);
+                profileContainer.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading profile.md:', error);
+                profileContainer.innerHTML = `
+                    <div class="error-message">
+                        <p>프로필을 불러오는 중 오류가 발생했습니다.</p>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
         function selectLanguage(lang) {
             localStorage.setItem('selectedLanguage', lang);
-            window.location.href = 'profile.html';
+            document.documentElement.lang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            updateContent(lang);
         }
+
+        function updateContent(lang) {
+            document.querySelectorAll('[data-en]').forEach(element => {
+                element.textContent = element.getAttribute(`data-${lang}`);
+            });
+        }
+
+        // Initialize with saved language preference or default to English
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+            selectLanguage(savedLang);
+            // Load profile content after a short delay to ensure DOM is ready
+            setTimeout(loadProfileMd, 100);
+        });
     </script>
 </body>
 </html>
