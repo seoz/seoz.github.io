@@ -1,9 +1,8 @@
 [기본 정보]
 - 이름 : 서주영
 - 닉네임 : 천재태지
-- 태어난 날 : 1981.02.10
 - 하는 일 : 구글 유튜브 파트너 엔지니어링 글로벌팀장 (Global Team Manager, Partner Engineering, YouTube, Google)
-- 사는 곳 : 미국 캘리포니아 실리콘밸리
+- 사는 곳 : 미국 캘리포니아, 샌프란시스코 베이지역 (실리콘밸리)
 
 [ Web Site]
 - 대표도메인 http://www.seoz.com
