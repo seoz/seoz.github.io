@@ -6,13 +6,14 @@
 
 [ Web Site]
 - 대표도메인 http://www.seoz.com
+- Linkedin https://www.linkedin.com/in/seoz/
+- Threads https://www.threads.com/@seojuyung
+- YouTube Channel https://www.youtube.com/user/DanielJuyungSeo/
 - 개인 블로그 http://blog.naver.com/seojuyung
 - Facebook http://www.facebook.com/seojuyung
 - 트위터 http://www.twitter.com/seojuyung
 - OpenHub https://www.openhub.net/accounts/seoz
-- Linkedin https://www.linkedin.com/in/seoz/
 - Slideshare http://www.slideshare.net/seojuyung
-- YouTube Channel https://www.youtube.com/user/DanielJuyungSeo/
 - StackOverflow http://stackoverflow.com/users/3458104/seoz
 - 미니홈피 http://www.cyworld.com/seoz/ (미사용)
 - 미투데이 http://me2day.net/seoz (미사용)
@@ -92,6 +93,7 @@
 [기고/발표/인터뷰]
 
 <2025>
+- 2025.07.29 - KIC 실리콘밸리, 숭실대 스파르탄SW 강의, "실리콘밸리에서 글로벌팀장이 되기까지"
 - 2025.05.24 - 링글 커리어패스플랜 웨비나 시리즈, "국내파 개발자가 유튜브 엔지니어링 매니저가 된 비결"
 - 2025.05.16 - 재미 한인 연구자 간담회 참여 (과학기술정보통신부 / ETRI 한국전자통신연구원 / NIPA 정보통신산업진흥원)
 - 2025.03 - LG 그룹 사내 다큐멘터리 촬영
