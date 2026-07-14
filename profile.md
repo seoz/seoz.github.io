@@ -199,7 +199,7 @@
 - 2012.10 다음 DevOn "EFL 툴킷으로 화려하면서도 가볍고 빠른 앱 만들기" 발표
 - 2012.10 삼성전자 제 1회 오픈소스 컨트리뷰터 데이 '오픈소스 개발자로 살아가기' 발표
 - 2012.8 그놈 한국 정기 모임 'Enlightenment' 발표
-- 2012.7 마이크로스프트웨어 잡지 'GUI 툴킷 EFL 알아보기' 기고
+- 2012.7 마이크로소프트웨어 잡지 'GUI 툴킷 EFL 알아보기' 기고
 
 [논문]
 - 2009 Tor 익명통신 시스템의 성능 및 보안 향상 기법 연구 = A Study on Enhancing Performance and Secrecy of Tor Anonymous Communication System, 2009.2 서주영
