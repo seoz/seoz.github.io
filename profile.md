@@ -3,21 +3,7 @@
 - 닉네임 : 천재태지
 - 하는 일 : 구글 유튜브 파트너 엔지니어링 글로벌팀장 (Global Team Manager, Partner Engineering, YouTube, Google)
 - 사는 곳 : 미국 캘리포니아, 샌프란시스코 베이지역 (실리콘밸리)
-
-[ Web Site]
-- 대표도메인 http://www.seoz.com
 - Linkedin https://www.linkedin.com/in/seoz/
-- Threads https://www.threads.com/@seojuyung
-- YouTube Channel https://www.youtube.com/user/DanielJuyungSeo/
-- 개인 블로그 http://blog.naver.com/seojuyung
-- Facebook http://www.facebook.com/seojuyung
-- 트위터 http://www.twitter.com/seojuyung
-- OpenHub https://www.openhub.net/accounts/seoz
-- Slideshare http://www.slideshare.net/seojuyung
-- StackOverflow http://stackoverflow.com/users/3458104/seoz
-- 미니홈피 http://www.cyworld.com/seoz/ (미사용)
-- 미투데이 http://me2day.net/seoz (미사용)
-- 이글루스 블로그 http://seoz.egloos.com/ (이글루스 서비스종료)
 
 [경력]
 - 2015.3 ~ 구글 유튜브 파트너 엔지니어링 매니저 (Senior Staff Partner Engineering Manager, 글로벌팀장/상무)
