@@ -92,11 +92,20 @@
     <script>
         function switchLanguage(lang) {
             localStorage.setItem('selectedLanguage', lang);
+            const url = new URL(window.location);
+            url.searchParams.set('lang', lang);
+            window.history.replaceState({}, '', url);
             loadProfile();
         }
 
+        function getLangFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const lang = params.get('lang');
+            return (lang === 'en' || lang === 'ko') ? lang : null;
+        }
+
         function loadProfile() {
-            const lang = localStorage.getItem('selectedLanguage') || 'en';
+            const lang = getLangFromUrl() || localStorage.getItem('selectedLanguage') || 'en';
             const profileName = document.getElementById('profile-name');
             const profileContent = document.getElementById('profile-content');
             

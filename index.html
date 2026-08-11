@@ -111,6 +111,10 @@
                 }
             });
             updateContent(lang);
+
+            const url = new URL(window.location);
+            url.searchParams.set('lang', lang);
+            window.history.replaceState({}, '', url);
         }
 
         function updateContent(lang) {
@@ -119,10 +123,16 @@
             });
         }
 
-        // Initialize with saved language preference or default to English
+        function getLangFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const lang = params.get('lang');
+            return (lang === 'en' || lang === 'ko') ? lang : null;
+        }
+
+        // Initialize with URL parameter, then saved language preference, then default to English
         document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selectedLanguage') || 'en';
-            selectLanguage(savedLang);
+            const lang = getLangFromUrl() || localStorage.getItem('selectedLanguage') || 'en';
+            selectLanguage(lang);
             // Load profile content after a short delay to ensure DOM is ready
             setTimeout(loadProfileMd, 100);
         });
