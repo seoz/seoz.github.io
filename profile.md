@@ -1,6 +1,5 @@
 [기본 정보]
 - 이름 : 서주영 (Daniel Juyung Seo)
-- 닉네임 : 천재태지
 - 하는 일 : 구글 유튜브 파트너 엔지니어링 글로벌팀장 (Global Team Manager, Partner Engineering, YouTube, Google)
 - 사는 곳 : 미국 캘리포니아, 샌프란시스코 베이지역 (실리콘밸리)
 - Linkedin https://www.linkedin.com/in/seoz/
