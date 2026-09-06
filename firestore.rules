@@ -1,0 +1,124 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'seojuyung@gmail.com'
+        && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+
+    function validLocalized(value) {
+      return value is map
+        && value.keys().hasOnly(['en', 'ko'])
+        && value.en is string
+        && value.ko is string
+        && value.en.size() <= 12000
+        && value.ko.size() <= 12000;
+    }
+
+    function validProfile(data) {
+      return data.keys().hasOnly([
+          'id', 'name', 'title', 'headline', 'summary', 'contactEmail',
+          'location', 'avatarUrl', 'socialLinks', 'updatedAt'
+        ])
+        && data.id == 'main'
+        && validLocalized(data.name)
+        && validLocalized(data.title)
+        && validLocalized(data.headline)
+        && validLocalized(data.summary)
+        && validLocalized(data.location)
+        && data.contactEmail is string
+        && data.contactEmail.size() <= 320
+        && data.avatarUrl is string
+        && data.avatarUrl.size() <= 2048
+        && data.socialLinks is list
+        && data.socialLinks.size() <= 12
+        && data.updatedAt is string;
+    }
+
+    function validTimeline(data, id) {
+      return data.keys().hasOnly([
+          'id', 'title', 'role', 'organization', 'period', 'location',
+          'description', 'links', 'highlights', 'tags', 'section', 'imageUrl', 'featured',
+          'order', 'updatedAt'
+        ])
+        && data.id == id
+        && validLocalized(data.title)
+        && validLocalized(data.role)
+        && validLocalized(data.organization)
+        && validLocalized(data.location)
+        && validLocalized(data.description)
+        && data.period is string
+        && data.period.size() <= 120
+        && data.links is list
+        && data.links.size() <= 12
+        && (!('highlights' in data)
+          || (data.highlights is list && data.highlights.size() <= 40))
+        && data.tags is list
+        && data.tags.size() <= 12
+        && data.section is string
+        && data.section.size() <= 80
+        && data.imageUrl is string
+        && data.imageUrl.size() <= 2048
+        && data.featured is bool
+        && data.order is int
+        && data.order >= 0
+        && data.order <= 100000
+        && data.updatedAt is string;
+    }
+
+    function validSection(data, id) {
+      return data.keys().hasOnly(['id', 'title', 'eyebrow', 'order', 'visible', 'updatedAt'])
+        && data.id == id
+        && validLocalized(data.title)
+        && validLocalized(data.eyebrow)
+        && data.order is int
+        && data.order >= 0
+        && data.order <= 10000
+        && data.visible is bool
+        && data.updatedAt is string;
+    }
+
+    function validLabel(data, id) {
+      return data.keys().hasOnly(['id', 'name', 'accent', 'order', 'updatedAt'])
+        && data.id == id
+        && validLocalized(data.name)
+        && data.accent is string
+        && data.accent.matches('^#[0-9a-fA-F]{6}$')
+        && data.order is int
+        && data.order >= 0
+        && data.order <= 10000
+        && data.updatedAt is string;
+    }
+
+    match /profile/{profileId} {
+      allow read: if true;
+      allow create, update: if profileId == 'main' && isAdmin() && validProfile(request.resource.data);
+      allow delete: if false;
+    }
+
+    match /timeline/{itemId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && validTimeline(request.resource.data, itemId);
+      allow delete: if isAdmin();
+    }
+
+    match /sections/{sectionId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && validSection(request.resource.data, sectionId);
+      allow delete: if isAdmin();
+    }
+
+    match /labels/{labelId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && validLabel(request.resource.data, labelId);
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element -- Vinext serves local and Firebase-hosted images directly. */
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import {
   ArrowUpRight,
@@ -10,6 +11,7 @@ import {
   ChevronDown,
   ExternalLink,
   Github,
+  Languages,
   Linkedin,
   Menu,
   Moon,
@@ -857,6 +859,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
                 {social.label}
               </a>
             ))}
+            <Link className="social-link" href="/admin"><Languages size={16} /> {copy.admin}</Link>
           </div>
         </div>
       </footer>
