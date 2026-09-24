@@ -37,3 +37,11 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# Firebase local artifacts
+/.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+*.tsbuildinfo
+gha-creds-*.json

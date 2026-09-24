@@ -6,12 +6,13 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "vinext start",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "firebase emulators:start --only hosting",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern out",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
-    "firebase:deploy": "firebase deploy --only firestore:rules,firestore:indexes,storage"
+    "firebase:deploy": "firebase deploy --project seoz-com --only firestore:rules,firestore:indexes,storage",
+    "deploy:hosting": "npm run lint && npm run build && firebase deploy --project seoz-com --only hosting"
   },
   "dependencies": {
     "firebase": "^12.3.0",
@@ -34,7 +35,7 @@
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.6",
     "firebase-admin": "^14.3.0",
-    "firebase-tools": "^14.15.2",
+    "firebase-tools": "^15.31.0",
     "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",
     "tsx": "^4.20.5",

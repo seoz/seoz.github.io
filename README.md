@@ -98,3 +98,29 @@ npm run build
 ```
 
 Security and architecture decisions are documented in [DESIGN.md](./DESIGN.md).
+
+## Firebase Hosting deployment
+
+Production uses a standard Next.js static export, served by Firebase Hosting. `npm run build` creates `out/` with separate public and admin routes. The historical Vite/Vinext/Sites files are retained for reference and are not used by the production scripts. Tailwind runs through `postcss.config.mjs`.
+
+The default project in `.firebaserc` is `seoz-com`; Firestore uses the named database `seozcom`. Set all required `NEXT_PUBLIC_FIREBASE_*` values before building, and set `NEXT_PUBLIC_SITE_URL=https://seoz.com`. These public values are embedded in the browser build; changing them requires a rebuild. Never commit `.env.local` or credential JSON.
+
+```bash
+npm ci
+npx firebase login
+npm run deploy:hosting
+```
+
+`deploy:hosting` runs lint, builds, then deploys only Hosting. `npm start` serves the exported files with the Firebase Hosting emulator. Deploy backend rules separately with `npm run firebase:deploy`. Do not run `npm run seed` during deployments: it overwrites matching seeded records.
+
+Before DNS cutover, verify https://seoz-com.web.app and `/admin/`, both languages, images, Google sign-in, Firestore content, image uploads, unauthorized write denial, and the bundled content fallback. Add production hostnames to Firebase Authentication's authorized domains.
+
+### Domain migration and HTTPS
+
+Keep domain registration and renewal at Gabia. DNS records must be edited at the authoritative nameserver provider; registration at Gabia does not by itself make Gabia authoritative. Back up the complete current DNS zone and Cafe24 files/database before retiring services. Preserve mail and verification records, including MX, SPF, DKIM, and DMARC.
+
+If moving DNS to Gabia, first copy the full existing zone with the old website destination, then change the nameservers and verify resolution. Keep any DNSSEC delegation consistent with the new provider. Do not cancel Cafe24 if DNS or email still depends on it.
+
+In Firebase Hosting, connect `seoz.com` using Advanced Setup, complete the ownership and certificate challenges, and wait for certificate readiness before changing web traffic records. Follow the current console's exact DNS values; challenge tokens can change. Keep the ownership TXT record for renewal. Connect `www.seoz.com` separately and redirect it to `seoz.com`. Firebase manages HTTPS certificates.
+
+Verify HTTP-to-HTTPS behavior, both hostnames, direct `/admin/` navigation, sign-in, HTTPS-only assets, old URLs, and email after cutover. Keep Cafe24 and old DNS values available for rollback during propagation. Use Firebase Hosting release history to roll back application releases. Cancel old hosting only after checking its remaining DNS, mail, and file dependencies.

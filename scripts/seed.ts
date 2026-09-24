@@ -4,11 +4,13 @@ import { getFirestore } from "firebase-admin/firestore";
 import { seedLabels, seedProfile, seedSections, seedTimeline } from "../src/data/seed";
 
 const projectId = process.env.FIREBASE_PROJECT_ID;
-const databaseId = process.env.FIREBASE_DATABASE_ID;
+const configuredDatabaseId = process.env.FIREBASE_DATABASE_ID;
 
-if (!projectId || !databaseId) {
+if (!projectId || !configuredDatabaseId) {
   throw new Error("FIREBASE_PROJECT_ID and FIREBASE_DATABASE_ID are required. Copy .env.example to .env.local or export them before seeding.");
 }
+
+const databaseId: string = configuredDatabaseId;
 
 const documents = [
   { path: "profile/main", data: seedProfile },

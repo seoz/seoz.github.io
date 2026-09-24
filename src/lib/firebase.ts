@@ -32,7 +32,7 @@ type FirebaseServices = {
 let services: FirebaseServices | null = null;
 
 export function getFirebaseServices(): FirebaseServices {
-  if (!firebaseEnvironment.configured) {
+  if (!firebaseEnvironment.configured || !requiredEnvironment.databaseId) {
     throw new Error(`Firebase configuration is incomplete: ${missingKeys.join(", ")}`);
   }
 

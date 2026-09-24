@@ -4,12 +4,12 @@
 
 The product is a public, highly available portfolio with a very small trusted-author set: exactly one administrator. Reads should remain useful if Firebase is unavailable, while writes must fail closed. Content must have first-class English and Korean representations and remain manageable without code changes.
 
-The application uses the Next.js App Router API through Vinext, TypeScript, Tailwind CSS, Firebase Authentication, Cloud Firestore, and Firebase Storage. The generated server output is Cloudflare Worker-compatible for Sites hosting.
+The application uses the Next.js App Router, TypeScript, Tailwind CSS, Firebase Authentication, Cloud Firestore, and Firebase Storage. Next.js exports static HTML and browser assets to `out/` for Firebase Hosting. The historical Vinext/Sites configuration is retained but is not used by the production scripts.
 
 ## 2. High-level architecture
 
 ```text
-Public browser ─┬─> Next/Vinext UI ──> bundled seed fallback
+Public browser ─┬─> Next.js UI ──> bundled seed fallback
                 └─> Firestore public read snapshots
 
 Admin browser ──> Google OAuth (Firebase Auth)
@@ -99,7 +99,9 @@ The public view is a direct toggle from the CMS. Firestore snapshots make saved 
 
 ## 10. Deployment and operations
 
-The build produces Cloudflare Worker-compatible Sites output. Runtime values belong in the host’s environment configuration; local values live in ignored `.env.local`. Firebase rules are versioned beside source and deployed separately because they are the authorization boundary.
+The production build exports `/` and `/admin/` to `out/`; Firebase Hosting serves each exported route without a catch-all SPA rewrite. Hashed Next.js assets use immutable caching. Public Firebase environment values are embedded at build time and must be supplied in the GitHub build environment or ignored local `.env.local`. A configuration change requires a rebuild. No application server is required: Authentication, Firestore snapshots, and Storage uploads run through the browser SDK.
+
+The default Firebase project is `seoz-com`, with named Firestore database `seozcom`. Firebase rules are versioned beside source and deployed separately because they are the authorization boundary. Seed imports are deliberate operations that overwrite matching document IDs, never part of automatic deployment. GitHub remains the source repository; Gabia remains the registrar. Custom-domain DNS must be edited at the authoritative DNS provider. Firebase Hosting manages TLS certificates for each connected hostname. See README for the deployment and cutover runbook.
 
 Recommended operational checks:
 
