@@ -5,6 +5,8 @@ export type LocalizedText = {
   ko: string;
 };
 
+export type ProfileFocus = { label: LocalizedText; items: LocalizedText[] };
+
 export type SocialLink = {
   id: string;
   label: string;
@@ -38,6 +40,7 @@ export type Profile = {
   location: LocalizedText;
   avatarUrl: string;
   socialLinks: SocialLink[];
+  focus?: ProfileFocus;
   updatedAt: string;
 };
 

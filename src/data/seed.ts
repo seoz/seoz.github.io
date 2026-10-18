@@ -6,6 +6,14 @@ const UPDATED_AT = "2026-09-01T00:00:00.000Z";
 
 export const seedProfile: Profile = {
   id: "main",
+  focus: {
+    label: { en: "Current focus", ko: "현재 집중 분야" },
+    items: [
+      { en: "Partner innovation", ko: "파트너 혁신" },
+      { en: "Engineering leadership", ko: "엔지니어링 리더십" },
+      { en: "Open-source communities", ko: "오픈소스 커뮤니티" },
+    ],
+  },
   name: { en: "Daniel Juyung Seo", ko: "서주영" },
   title: { en: "Global Head of Partner Innovations & Engagement", ko: "글로벌 파트너 혁신 및 참여 총괄" },
   headline: { en: "Daniel turns ideas into impact.", ko: "Daniel은 아이디어를 실질적인 영향력으로 바꿉니다." },

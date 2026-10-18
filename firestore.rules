@@ -59,12 +59,30 @@ service cloud.firestore {
         ;
     }
 
+    function validFocusText(text) {
+      return validLocalized(text) && text.en.size() > 0 && text.ko.size() > 0
+        && text.en.size() <= 120 && text.ko.size() <= 120;
+    }
+
+    function validFocus(focus) {
+      return focus is map && focus.keys().hasOnly(['label', 'items'])
+        && validFocusText(focus.label) && focus.items is list && focus.items.size() <= 6
+        && (focus.items.size() <= 0 || validFocusText(focus.items[0]))
+        && (focus.items.size() <= 1 || validFocusText(focus.items[1]))
+        && (focus.items.size() <= 2 || validFocusText(focus.items[2]))
+        && (focus.items.size() <= 3 || validFocusText(focus.items[3]))
+        && (focus.items.size() <= 4 || validFocusText(focus.items[4]))
+        && (focus.items.size() <= 5 || validFocusText(focus.items[5]))
+        ;
+    }
+
     function validProfile(data) {
       return data.keys().hasOnly([
           'id', 'name', 'title', 'headline', 'summary', 'contactEmail',
-          'location', 'avatarUrl', 'socialLinks', 'updatedAt'
+          'location', 'avatarUrl', 'socialLinks', 'focus', 'updatedAt'
         ])
         && data.id == 'main'
+        && (!('focus' in data) || validFocus(data.focus))
         && validLocalized(data.name)
         && validLocalized(data.title)
         && validLocalized(data.headline)
