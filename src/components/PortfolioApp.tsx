@@ -22,7 +22,6 @@ import {
   UsersRound,
 } from "lucide-react";
 import { usePortfolioContent } from "@/src/hooks/usePortfolioContent";
-import { seedPressCards } from "@/src/data/press";
 import { talkEngagementMetrics } from "@/src/data/profileArchive";
 import { DEFAULT_LANGUAGE, localize, normalizeLanguage, uiCopy } from "@/src/lib/i18n";
 import type { Language, PortfolioContent, TimelineItem } from "@/src/types/content";
@@ -393,6 +392,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
     return groups;
   }, [content.sections, filteredItems, visibleSections]);
 
+  const press = content.press;
   const headline = localize(profile.headline, language);
   const headlineWords = headline.split(" ");
   const emphasisTerm = language === "en" ? "impact" : "영향력";
@@ -543,14 +543,14 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
         <div className="mx-auto max-w-[1384px]">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,.62fr)] lg:items-end">
             <div>
-              <p className="section-eyebrow">{copy.pressEyebrow}</p>
-              <h2 className="section-title">{copy.pressTitle}</h2>
+              <p className="section-eyebrow">{localize(press.eyebrow, language)}</p>
+              <h2 className="section-title">{localize(press.title, language)}</h2>
             </div>
-            <p className="max-w-xl text-base leading-7 text-[var(--muted)] lg:justify-self-end">{copy.pressBody}</p>
+            <p className="max-w-xl text-base leading-7 text-[var(--muted)] lg:justify-self-end">{localize(press.body, language)}</p>
           </div>
 
           <div className="mt-8 grid gap-px border border-[var(--line)] bg-[var(--line)] md:grid-cols-2 lg:grid-cols-3">
-              {seedPressCards.map((item) => {
+              {press.cards.map((item) => {
                 const ItemIcon = item.kind === "linkedin" ? Linkedin : item.kind === "book" ? BookOpen : item.kind === "video" ? Play : Newspaper;
 
                 return (
@@ -563,13 +563,13 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
                     aria-label={`${localize(item.title, language)} — ${copy.pressOpen}`}
                   >
                     <span className={`relative block aspect-video overflow-hidden ${item.kind === "book" ? "bg-white p-4" : "bg-[var(--surface-soft)]"}`}>
-                      <img
+                      {item.image && <img
                         className={`h-full w-full transition duration-500 group-hover:scale-[1.025] ${item.kind === "book" ? "object-contain object-center" : item.kind === "article" ? "object-cover object-top" : item.kind === "linkedin" ? "object-cover object-[center_28%]" : "object-cover object-center"}`}
                         src={item.image}
                         alt={localize(item.imageAlt, language)}
                         loading="lazy"
                         decoding="async"
-                      />
+                      />}
                       <span className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full bg-[#10243e] text-white shadow-lg" aria-hidden="true">
                         <ItemIcon size={16} />
                       </span>

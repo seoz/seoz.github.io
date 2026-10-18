@@ -46,13 +46,16 @@ import type {
   PortfolioLabel,
   PortfolioSection,
   Profile,
+  PressCard,
   TimelineHighlight,
   TimelineItem,
   TimelineLink,
 } from "@/src/types/content";
 
+import { isValidPress } from "@/src/lib/press";
+
 const ADMIN_EMAIL = "seojuyung@gmail.com";
-type AdminTab = "overview" | "profile" | "timeline" | "sections" | "labels";
+type AdminTab = "overview" | "profile" | "press" | "timeline" | "sections" | "labels";
 type AuthStatus = "loading" | "signed-out" | "authorized" | "denied";
 
 const emptyLocalized = (): LocalizedText => ({ en: "", ko: "" });
@@ -231,9 +234,16 @@ export function AdminDashboard() {
   const [notice, setNotice] = useState("");
   const [saving, setSaving] = useState(false);
   const [profileDraft, setProfileDraft] = useState<Profile>(content.profile);
+  const [pressDraft, setPressDraft] = useState(content.press);
+  const updatePressCard = (index: number, changes: Partial<PressCard>) => setPressDraft({ ...pressDraft, cards: pressDraft.cards.map((card, cardIndex) => cardIndex === index ? { ...card, ...changes } : card) });
   const [itemDraft, setItemDraft] = useState<TimelineItem | null>(null);
   const [sectionDraft, setSectionDraft] = useState<PortfolioSection | null>(null);
   const [labelDraft, setLabelDraft] = useState<PortfolioLabel | null>(null);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setPressDraft(content.press), 0);
+    return () => window.clearTimeout(timer);
+  }, [content.press]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setProfileDraft(content.profile), 0);
@@ -297,7 +307,7 @@ export function AdminDashboard() {
   const orderedSections = [...content.sections].sort((a, b) => a.order - b.order);
   const orderedLabels = [...content.labels].sort((a, b) => a.order - b.order);
 
-  const uploadImage = async (event: ChangeEvent<HTMLInputElement>, target: "profile" | "timeline" | "highlight", highlightIndex?: number) => {
+  const uploadImage = async (event: ChangeEvent<HTMLInputElement>, target: "profile" | "timeline" | "highlight" | "press", highlightIndex?: number) => {
     const file = event.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) return setNotice("Choose an image file.");
@@ -310,6 +320,7 @@ export function AdminDashboard() {
       const url = await getDownloadURL(storageRef);
       if (target === "profile") setProfileDraft((draft) => ({ ...draft, avatarUrl: url }));
       else if (target === "timeline") setItemDraft((draft) => draft ? ({ ...draft, imageUrl: url }) : draft);
+      else if (target === "press" && highlightIndex !== undefined) setPressDraft((press) => ({ ...press, cards: press.cards.map((card, index) => index === highlightIndex ? { ...card, image: url } : card) }));
       else setItemDraft((draft) => {
         if (!draft || highlightIndex === undefined) return draft;
         const highlights = [...(draft.highlights ?? [])];
@@ -352,6 +363,7 @@ export function AdminDashboard() {
   const navigation: Array<{ id: AdminTab; label: string; icon: ReactNode }> = [
     { id: "overview", label: "Overview", icon: <LayoutDashboard size={17} /> },
     { id: "profile", label: "Profile", icon: <UserRound size={17} /> },
+    { id: "press", label: "Press", icon: <FileText size={17} /> },
     { id: "timeline", label: "Timeline", icon: <FileText size={17} /> },
     { id: "sections", label: "Sections", icon: <ListFilter size={17} /> },
     { id: "labels", label: "Labels", icon: <Tag size={17} /> },
@@ -426,6 +438,49 @@ export function AdminDashboard() {
                 </div>
               </div>
             </div>
+          )}
+
+          {activeTab === "press" && (
+            <form className="mx-auto max-w-5xl" onSubmit={(event) => {
+              event.preventDefault();
+              if (!isValidPress(pressDraft)) return setNotice("Complete both languages for all text and image descriptions. Use HTTP(S) links and image URLs or local image paths. Maximum 12 cards; text limit 12,000 characters and URL limit 2,048.");
+              runMutation(async () => {
+                const batch = writeBatch(db);
+                const { cards, ...introduction } = pressDraft;
+                batch.set(doc(db, "press", "main"), { id: "main", ...introduction, cardIds: cards.map((card) => card.id) });
+                cards.forEach((card) => batch.set(doc(db, "press", card.id), card));
+                content.press.cards.filter((card) => !cards.some((next) => next.id === card.id)).forEach((card) => batch.delete(doc(db, "press", card.id)));
+                await batch.commit();
+              }, "Press section saved.");
+            }}>
+              <div className="admin-page-heading"><div><p className="section-eyebrow">Featured conversations</p><h1>Press</h1></div><AdminButton type="submit" disabled={saving}><Save size={15} /> Save press</AdminButton></div>
+              <p className="mt-4 text-sm leading-6 text-[var(--muted)]">Edit the section introduction and up to 12 cards. Changes and uploaded images appear publicly after saving. Removing all cards leaves the section introduction visible.</p>
+              <fieldset disabled={saving} className="mt-8 space-y-6">
+                <div className="space-y-6 border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-7">
+                  <LocalizedFields label="Eyebrow" value={pressDraft.eyebrow} onChange={(eyebrow) => setPressDraft({ ...pressDraft, eyebrow })} />
+                  <LocalizedFields label="Heading" value={pressDraft.title} onChange={(title) => setPressDraft({ ...pressDraft, title })} />
+                  <LocalizedFields label="Description" value={pressDraft.body} onChange={(body) => setPressDraft({ ...pressDraft, body })} multiline />
+                </div>
+                {pressDraft.cards.map((card, index) => (
+                  <fieldset key={card.id} className="min-w-0 space-y-5 border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-7">
+                    <legend className="px-2 text-sm font-black">Card {index + 1}</legend>
+                    <div className="flex flex-wrap gap-2">
+                      <AdminButton variant="secondary" disabled={index === 0} onClick={() => { const cards = [...pressDraft.cards]; [cards[index - 1], cards[index]] = [cards[index], cards[index - 1]]; setPressDraft({ ...pressDraft, cards }); }}><ArrowUp size={15} /> Move up</AdminButton>
+                      <AdminButton variant="secondary" disabled={index === pressDraft.cards.length - 1} onClick={() => { const cards = [...pressDraft.cards]; [cards[index], cards[index + 1]] = [cards[index + 1], cards[index]]; setPressDraft({ ...pressDraft, cards }); }}><ArrowDown size={15} /> Move down</AdminButton>
+                      <AdminButton variant="danger" onClick={() => setPressDraft({ ...pressDraft, cards: pressDraft.cards.filter((_, cardIndex) => cardIndex !== index) })}><Trash2 size={15} /> Remove card {index + 1}</AdminButton>
+                    </div>
+                    <Field label="Card type"><select className="admin-input" value={card.kind} onChange={(event) => updatePressCard(index, { kind: event.target.value as PressCard["kind"] })}><option value="linkedin">LinkedIn</option><option value="book">Book</option><option value="video">Video</option><option value="article">Article</option></select></Field>
+                    <LocalizedFields label="Source and year" value={card.meta} onChange={(meta) => updatePressCard(index, { meta })} />
+                    <LocalizedFields label="Card title" value={card.title} onChange={(title) => updatePressCard(index, { title })} />
+                    <Field label="Destination URL"><input className="admin-input" type="url" required maxLength={2048} value={card.url} onChange={(event) => updatePressCard(index, { url: event.target.value })} /></Field>
+                    <Field label="Image URL or local path" hint="Optional. Use an HTTP(S) URL, a path such as /press/image.jpg, or upload an image."><input className="admin-input" maxLength={2048} value={card.image} onChange={(event) => updatePressCard(index, { image: event.target.value })} /></Field>
+                    <Field label={`Upload image for card ${index + 1}`} hint="Image files smaller than 5 MB"><input className="admin-input" type="file" accept="image/*" onChange={(event) => uploadImage(event, "press", index)} /></Field>
+                    <LocalizedFields label="Image description" value={card.imageAlt} onChange={(imageAlt) => updatePressCard(index, { imageAlt })} />
+                  </fieldset>
+                ))}
+                <AdminButton variant="secondary" disabled={pressDraft.cards.length >= 12} onClick={() => setPressDraft({ ...pressDraft, cards: [...pressDraft.cards, { id: crypto.randomUUID(), kind: "article", meta: emptyLocalized(), title: emptyLocalized(), image: "", imageAlt: emptyLocalized(), url: "" }] })}><Plus size={15} /> Add card</AdminButton>
+              </fieldset>
+            </form>
           )}
 
           {activeTab === "timeline" && (

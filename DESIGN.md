@@ -80,7 +80,7 @@ Firestore Rules cannot deeply iterate arbitrary nested arrays. The rule set ther
 - The hero uses a concise bilingual promise about turning ideas into impact alongside a neutral offset editorial portrait frame, a high-contrast information panel, broad regional location copy without precise coordinates, and a compact bilingual focus strip that uses the former empty lower-left area.
 - The compact statistics strip calculates completed Google tenure from March 2015 at runtime and keeps it visually dominant; the six-year Samsung and 6+ year startup tenures are grouped as supporting experience without crowding the page.
 - The compact bilingual Donation Mentoring and Connect sections follow the complete archive, in that order. Connect uses the lighter elevated surface with stronger top and bottom rules. Mentoring has one explicit external profile link and remains bundled editorial content rather than a Firestore collection.
-- The content hook subscribes to `press/main` and `press/{cardId}` through one collection snapshot. Missing or malformed configuration uses the tested seed fallback; explicitly empty card lists remain empty. Each card has its own document to stay within Firestore rule evaluation limits. The collection allows public reads and verified Google admin writes, with explicit identity and full schema validation. Image uploads retain the existing admin-only Storage path and bounds.
+- The Press section reads `press/main` and `press/{cardId}` through one collection snapshot. Its bilingual introduction and ordered list of up to 12 cards are editable in the admin Press tab, including image upload, type, source labels, title, alt text, and destination URL. Missing or malformed configuration uses `src/data/press.ts` through the tested seed fallback; empty saved lists remain empty. Saves atomically write the introduction, ordered IDs, and cards while deleting removed cards, independently of the profile. A separate document per card keeps full validation within Firestore's rule expression budget. The collection allows public reads and only verified Google admin writes, with explicit document identity and schema rules, bounded bilingual text, icon kinds, IDs, HTTP(S) destinations, and safe image locations. Storage continues to enforce the existing admin-only `portfolio/*` image path, MIME type, and size bound.
 - Empty filters have a purposeful reset state.
 - Loading remote content uses motion-respecting skeletons.
 - Markdown is rendered with `react-markdown`; raw HTML is not enabled.
@@ -88,7 +88,7 @@ Firestore Rules cannot deeply iterate arbitrary nested arrays. The rule set ther
 
 ## 8. CMS behavior
 
-The CMS provides profile editing, bilingual timeline CRUD, multiple links per item, optional per-line highlights with image upload and links, label assignment, image upload, section and label CRUD, feature flags, and timeline reordering. Reordering uses a Firestore batch so swapped order values commit atomically.
+The CMS provides Press introduction and card editing, profile editing, bilingual timeline CRUD, multiple links per item, optional per-line highlights with image upload and links, label assignment, image upload, section and label CRUD, feature flags, and timeline reordering. Reordering uses a Firestore batch so swapped order values commit atomically.
 
 The public view is a direct toggle from the CMS. Firestore snapshots make saved edits visible without a rebuild or redeploy.
 
