@@ -13,7 +13,6 @@ import {
   Github,
   Languages,
   Linkedin,
-  Menu,
   Moon,
   Newspaper,
   Play,
@@ -21,7 +20,6 @@ import {
   Sparkles,
   Sun,
   UsersRound,
-  X,
 } from "lucide-react";
 import { usePortfolioContent } from "@/src/hooks/usePortfolioContent";
 import { talkEngagementMetrics } from "@/src/data/profileArchive";
@@ -85,6 +83,7 @@ const pressHighlights = [
     url: "http://www.zdnet.co.kr/view/?no=20181107095322",
   },
 ] as const;
+
 
 const archiveSectionAccents: Record<string, string> = {
   career: "#2c61b7",
@@ -319,7 +318,6 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
   const [activeTag, setActiveTag] = useState("all");
   const [grouped, setGrouped] = useState(true);
   const [search, setSearch] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(
     () => new Set(content.timeline.filter((item) => item.section === "talks").map((item) => item.id)),
   );
@@ -459,15 +457,15 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
     <main className="min-h-screen overflow-x-clip bg-[var(--canvas)] text-[var(--ink)]">
       <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--canvas)_88%,transparent)] backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] w-full max-w-[1480px] items-center justify-between px-5 sm:px-8 lg:px-12">
-          <a className="text-sm font-black tracking-[0.18em]" href="#top" onClick={() => setMenuOpen(false)}>
+          <a className="text-sm font-black tracking-[0.18em]" href="#top">
             DANIEL SEO<span className="text-[var(--accent)]">.</span>
           </a>
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
             <a className="nav-link" href="#press">{copy.navPress}</a>
+            <a className="nav-link" href="#work">{copy.navWork}</a>
             <a className="nav-link" href="#story">{copy.navStory}</a>
             <a className="nav-link" href="#connect">{copy.navConnect}</a>
-            <a className="nav-link" href="#work">{copy.navWork}</a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -479,7 +477,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
             >
               {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
             </button>
-            <div className="hidden items-center rounded-full border border-[var(--line)] bg-[var(--surface-soft)] p-1 sm:flex">
+            <div className="flex items-center rounded-full border border-[var(--line)] bg-[var(--surface-soft)] p-1">
               {(["en", "ko"] as const).map((option) => (
                 <button
                   key={option}
@@ -492,25 +490,14 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
                 </button>
               ))}
             </div>
-            <button className="icon-button md:hidden" type="button" aria-label="Open menu" onClick={() => setMenuOpen((open) => !open)}>
-              {menuOpen ? <X size={18} /> : <Menu size={18} />}
-            </button>
           </div>
         </div>
 
-        {menuOpen && (
-          <div className="border-t border-[var(--line)] bg-[var(--canvas)] px-5 py-5 md:hidden">
-            <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
-              {[["#press", copy.navPress], ["#story", copy.navStory], ["#connect", copy.navConnect], ["#work", copy.navWork]].map(([href, label]) => (
-                <a key={href} className="py-3 text-lg font-black" href={href} onClick={() => setMenuOpen(false)}>{label}</a>
-              ))}
-            </nav>
-            <div className="mt-4 flex gap-2 border-t border-[var(--line)] pt-5">
-              <button className={`language-button ${language === "en" ? "active" : ""}`} onClick={() => changeLanguage("en")}>English</button>
-              <button className={`language-button ${language === "ko" ? "active" : ""}`} onClick={() => changeLanguage("ko")}>한국어</button>
-            </div>
-          </div>
-        )}
+        <nav className="flex flex-wrap justify-center gap-1 border-t border-[var(--line)] px-5 py-2 md:hidden" aria-label="Mobile navigation">
+          {[["#press", copy.navPress], ["#work", copy.navWork], ["#story", copy.navStory], ["#connect", copy.navConnect]].map(([href, label]) => (
+            <a key={href} className="nav-link" href={href}>{label}</a>
+          ))}
+        </nav>
       </header>
 
       <section id="top" className="mx-auto grid w-full max-w-[1480px] gap-8 px-5 pb-8 pt-10 sm:px-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(340px,.55fr)] lg:px-12 lg:pb-12 lg:pt-12">
@@ -520,7 +507,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
               {localize(profile.location, language)} · {language === "en" ? "Global technology leader" : "글로벌 테크놀로지 리더"}
             </p>
-            <h1 className="max-w-5xl text-[clamp(3.35rem,8vw,8.35rem)] font-black leading-[0.86] tracking-[-0.068em]">
+            <h1 className="max-w-5xl text-[clamp(3.35rem,8vw,8.35rem)] font-black leading-[1.02] tracking-[-0.025em]">
               {headlineWords.map((word, index) => (
                 <span key={`${word}-${index}`} className={index === emphasisIndex ? "text-[var(--accent)]" : ""}>
                   {word}{index < headlineWords.length - 1 ? " " : ""}
@@ -653,52 +640,6 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
                   </a>
                 );
               })}
-          </div>
-        </div>
-      </section>
-
-      <section id="story" className="scroll-mt-24 border-y border-[var(--line)] bg-[var(--ink)] px-5 py-12 text-[var(--canvas)] sm:px-8 lg:px-12 lg:py-16">
-        <div className="mx-auto max-w-[1384px]">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,.7fr)] lg:items-end">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--lime)]">{copy.storyEyebrow}</p>
-              <h2 className="mt-3 max-w-4xl text-[clamp(2.65rem,4.4vw,4.5rem)] font-black leading-[0.94] tracking-[-0.055em]">{copy.storyTitle}</h2>
-            </div>
-            <p className="max-w-xl text-base leading-7 text-[color-mix(in_srgb,var(--canvas)_68%,transparent)]">{copy.storyBody}</p>
-          </div>
-
-          <a
-            className="group mt-8 grid items-center gap-5 border border-[color-mix(in_srgb,var(--canvas)_22%,transparent)] bg-[color-mix(in_srgb,var(--canvas)_5%,transparent)] p-5 transition-colors hover:bg-[color-mix(in_srgb,var(--canvas)_9%,transparent)] focus-visible:bg-[color-mix(in_srgb,var(--canvas)_9%,transparent)] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:p-6"
-            href="https://donation-mentoring.org/?m=d9mm9slu"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--lime)] text-[#10243e]" aria-hidden="true">
-              <UsersRound size={22} />
-            </span>
-            <span>
-              <span className="block text-xs font-black uppercase tracking-[0.16em] text-[var(--lime)]">{copy.mentoringProgram}</span>
-              <span className="mt-2 block max-w-3xl text-base font-semibold leading-7 text-[color-mix(in_srgb,var(--canvas)_72%,transparent)] sm:text-lg">
-                {copy.mentoringProgramBody}
-              </span>
-            </span>
-            <span className="flex items-center gap-3 text-sm font-black text-[var(--canvas)] sm:justify-self-end">
-              {copy.mentoringProfile}
-              <ArrowUpRight className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={19} aria-hidden="true" />
-            </span>
-          </a>
-        </div>
-      </section>
-
-      <section id="connect" className="scroll-mt-24 border-y border-[var(--line-strong)] bg-[var(--surface)] px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
-        <div className="mx-auto max-w-[1384px]">
-          <p className="section-eyebrow">{copy.connectEyebrow}</p>
-          <div className="mt-3 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,.55fr)] lg:items-end">
-            <h2 className="text-[clamp(2.75rem,5vw,5rem)] font-black leading-[0.9] tracking-[-0.06em]">{copy.connectTitle}</h2>
-            <div className="lg:justify-self-end">
-              <p className="max-w-lg text-base leading-7 text-[var(--muted)]">{copy.connectBody}</p>
-              <a className="primary-button mt-5" href={`mailto:${profile.contactEmail}`}>{profile.contactEmail} <ArrowUpRight size={16} /></a>
-            </div>
           </div>
         </div>
       </section>
@@ -843,6 +784,52 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
           ) : (
             <div className="mt-6">{filteredItems.map((item) => <TimelineCard key={item.id} item={item} language={language} labelLookup={labelLookup} featuredLabel={copy.featured} expanded={expandedItems.has(item.id)} onToggle={() => toggleItem(item.id)} detailsLabel={copy.details} collapseLabel={copy.collapse} />)}</div>
           )}
+        </div>
+      </section>
+
+      <section id="story" className="scroll-mt-24 border-y border-[var(--line)] bg-[var(--ink)] px-5 py-12 text-[var(--canvas)] sm:px-8 lg:px-12 lg:py-16">
+        <div className="mx-auto max-w-[1384px]">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,.7fr)] lg:items-end">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--lime)]">{copy.storyEyebrow}</p>
+              <h2 className="mt-3 max-w-4xl text-[clamp(2.65rem,4.4vw,4.5rem)] font-black leading-[0.94] tracking-[-0.055em]">{copy.storyTitle}</h2>
+            </div>
+            <p className="max-w-xl text-base leading-7 text-[color-mix(in_srgb,var(--canvas)_68%,transparent)]">{copy.storyBody}</p>
+          </div>
+
+          <a
+            className="group mt-8 grid items-center gap-5 border border-[color-mix(in_srgb,var(--canvas)_22%,transparent)] bg-[color-mix(in_srgb,var(--canvas)_5%,transparent)] p-5 transition-colors hover:bg-[color-mix(in_srgb,var(--canvas)_9%,transparent)] focus-visible:bg-[color-mix(in_srgb,var(--canvas)_9%,transparent)] sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:p-6"
+            href="https://donation-mentoring.org/?m=d9mm9slu"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--lime)] text-[#10243e]" aria-hidden="true">
+              <UsersRound size={22} />
+            </span>
+            <span>
+              <span className="block text-xs font-black uppercase tracking-[0.16em] text-[var(--lime)]">{copy.mentoringProgram}</span>
+              <span className="mt-2 block max-w-3xl text-base font-semibold leading-7 text-[color-mix(in_srgb,var(--canvas)_72%,transparent)] sm:text-lg">
+                {copy.mentoringProgramBody}
+              </span>
+            </span>
+            <span className="flex items-center gap-3 text-sm font-black text-[var(--canvas)] sm:justify-self-end">
+              {copy.mentoringProfile}
+              <ArrowUpRight className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={19} aria-hidden="true" />
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <section id="connect" className="scroll-mt-24 border-y border-[var(--line-strong)] bg-[var(--surface)] px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
+        <div className="mx-auto max-w-[1384px]">
+          <p className="section-eyebrow">{copy.connectEyebrow}</p>
+          <div className="mt-3 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,.55fr)] lg:items-end">
+            <h2 className="text-[clamp(2.75rem,5vw,5rem)] font-black leading-[0.9] tracking-[-0.06em]">{copy.connectTitle}</h2>
+            <div className="lg:justify-self-end">
+              <p className="max-w-lg text-base leading-7 text-[var(--muted)]">{copy.connectBody}</p>
+              <a className="primary-button mt-5" href={`mailto:${profile.contactEmail}`}>{profile.contactEmail} <ArrowUpRight size={16} /></a>
+            </div>
+          </div>
         </div>
       </section>
 

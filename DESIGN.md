@@ -75,7 +75,7 @@ Firestore Rules cannot deeply iterate arbitrary nested arrays. The rule set ther
 - The fallback profile portrait is a checked-in asset at `public/seoz.jpg`; Firebase may replace it at runtime with an uploaded CMS image using the same profile field.
 - The hero uses a concise bilingual promise about turning ideas into impact alongside a neutral offset editorial portrait frame, a high-contrast information panel, broad regional location copy without precise coordinates, and a compact bilingual focus strip that uses the former empty lower-left area.
 - The compact statistics strip calculates completed Google tenure from March 2015 at runtime and keeps it visually dominant; the six-year Samsung and 6+ year startup tenures are grouped as supporting experience without crowding the page.
-- The compact bilingual Donation Mentoring and Connect sections appear before the long-form archive so visitors encounter the primary relationship and contact paths before deep exploration. Connect uses the lighter elevated surface with stronger top and bottom rules, creating a clear transition into the cream archive canvas. Mentoring has one explicit external profile link and remains bundled editorial content rather than a Firestore collection.
+- The compact bilingual Donation Mentoring and Connect sections follow the complete archive, in that order. Connect uses the lighter elevated surface with stronger top and bottom rules. Mentoring has one explicit external profile link and remains bundled editorial content rather than a Firestore collection.
 - The Press & Interviews section is compact bundled editorial content with English and Korean labels, source-specific card imagery under `public/press/`, and direct external links. It does not add a Firestore collection or broaden the security rules.
 - Empty filters have a purposeful reset state.
 - Loading remote content uses motion-respecting skeletons.
@@ -94,7 +94,7 @@ The public view is a direct toggle from the CMS. Firestore snapshots make saved 
 - Images use lazy loading outside the hero and have explicit fallbacks.
 - Controls have visible focus states, accessible labels, adequate touch targets, and reduced-motion behavior.
 - The primary navigation stays sticky and is intentionally kept outside any vertical overflow container so it remains accessible throughout long archive pages.
-- Layouts are fluid from small mobile screens to wide desktop canvases.
+- Layouts are fluid from small mobile screens to wide desktop canvases. The hero headline uses -0.025em letter spacing and 1.02 line height to keep characters and lines legible. Header navigation follows page order; mobile links use an always-visible second row instead of a menu toggle, and language controls remain visible at all widths.
 - The theme uses color variables and preserves contrast in both modes.
 
 ## 10. Deployment and operations
