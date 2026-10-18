@@ -91,13 +91,14 @@ function TimelineCard({
   const itemAccent = archiveSectionAccents[item.section] ?? "var(--accent)";
   const isCareerItem = item.section === "career";
   const isSingleYear = /^\d{4}$/.test(item.period.trim());
+  const isTalkDigest = item.section === "talks" && isSingleYear;
 
   return (
-    <article className="group border-t border-[var(--line)] py-5 first:border-t-0 md:py-6">
-      <div className="grid gap-4 md:grid-cols-[132px_minmax(0,1fr)_auto] md:gap-6">
+    <article className={`group border-t border-[var(--line)] py-5 first:border-t-0 md:py-6 ${isTalkDigest ? "grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 md:grid-cols-[132px_minmax(0,1fr)_auto] md:gap-x-6" : ""}`}>
+      <div className={isTalkDigest ? "contents" : "grid gap-4 md:grid-cols-[132px_minmax(0,1fr)_auto] md:gap-6"}>
         <div>
           <p
-            className={`inline-flex border px-2.5 py-1 font-mono font-black tracking-tight ${isSingleYear ? "min-w-16 justify-center text-sm" : "text-[11px]"}`}
+            className={`inline-flex border px-2.5 py-1 font-mono font-black tracking-tight ${isSingleYear ? "min-w-24 justify-center text-2xl sm:text-3xl" : "text-[11px]"}`}
             style={{
               borderColor: itemAccent,
               color: itemAccent,
@@ -106,12 +107,14 @@ function TimelineCard({
           >
             {item.period}
           </p>
-          <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--accent)]">
-            {localize(item.location, language)}
-          </p>
+          {item.location.en.trim().toLowerCase() !== "various locations" && item.location.ko.trim() !== "여러 지역" && (
+            <p className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--accent)]">
+              {localize(item.location, language)}
+            </p>
+          )}
         </div>
 
-        <div className="min-w-0">
+        {!isTalkDigest && <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-1.5">
             {item.featured && (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--lime)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.09em] text-[#10243e]">
@@ -135,14 +138,9 @@ function TimelineCard({
             })}
           </div>
 
-          <h3 className="text-balance text-xl font-black leading-tight tracking-[-0.03em] text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] md:text-2xl">
-            {localize(item.title, language)}
-          </h3>
-          {isCareerItem ? (
-            <div className="mt-2 flex flex-wrap items-center gap-2.5">
-              <p className="text-xs font-bold text-[var(--ink)] sm:text-sm">{localize(item.role, language)}</p>
+          {isCareerItem && (
               <span
-                className="inline-flex items-center gap-1.5 border px-2.5 py-1 text-xs font-black sm:text-sm"
+                className="mb-2 inline-flex items-center gap-1.5 border px-2.5 py-1 text-xs font-black sm:text-sm"
                 style={{
                   borderColor: itemAccent,
                   color: "white",
@@ -152,6 +150,13 @@ function TimelineCard({
                 <Building2 size={14} aria-hidden="true" />
                 {localize(item.organization, language)}
               </span>
+          )}
+          <h3 className="text-balance text-xl font-black leading-tight tracking-[-0.03em] text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] md:text-2xl">
+            {localize(item.title, language)}
+          </h3>
+          {isCareerItem ? (
+            <div className="mt-2 flex flex-wrap items-center gap-2.5">
+              <p className="text-xs font-bold text-[var(--ink)] sm:text-sm">{localize(item.role, language)}</p>
             </div>
           ) : (
             <p className="mt-1.5 text-xs font-bold text-[var(--ink)] sm:text-sm">
@@ -160,15 +165,16 @@ function TimelineCard({
               <span className="text-[var(--muted)]">{localize(item.organization, language)}</span>
             </p>
           )}
-        </div>
+        </div>}
 
-        <div className="flex items-start justify-between gap-3 md:justify-end">
+        <div className={`flex items-start justify-between gap-3 md:justify-end ${isTalkDigest ? "col-start-2 row-start-1 md:col-start-3" : ""}`}>
           {item.imageUrl && (
             <img className="h-14 w-20 object-cover" src={item.imageUrl} alt="" loading="lazy" />
           )}
           <button
             className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[var(--line)] px-3 text-xs font-black text-[var(--muted)] transition hover:border-[var(--ink)] hover:text-[var(--ink)]"
             type="button"
+            aria-label={`${expanded ? collapseLabel : detailsLabel}: ${isTalkDigest ? item.period : localize(item.title, language)}`}
             aria-expanded={expanded}
             aria-controls={detailsId}
             onClick={onToggle}
@@ -180,7 +186,7 @@ function TimelineCard({
       </div>
 
       {expanded && (
-        <div id={detailsId} className="mt-4 border-t border-dashed border-[var(--line)] pt-4 md:ml-[158px]">
+        <div id={detailsId} className={isTalkDigest ? "col-span-2 row-start-2 mt-4 min-w-0 md:col-span-1 md:col-start-2 md:row-start-1 md:mt-0" : "mt-4 border-t border-dashed border-[var(--line)] pt-4 md:ml-[158px]"}>
           {highlights.length > 0 ? (
             <ol className="max-w-4xl divide-y divide-[var(--line)]" aria-label={localize(item.title, language)}>
               {highlights.map((highlight, index) => {
@@ -393,8 +399,8 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
     return groups;
   }, [content.sections, filteredItems, visibleSections]);
 
-  const focus = profile.focus ?? seedProfile.focus!;
   const talkEngagementMetrics = useMemo(() => getTalkMetrics(content.timeline), [content.timeline]);
+  const focus = profile.focus ?? seedProfile.focus!;
   const press = content.press;
   const headline = localize(profile.headline, language);
   const headlineWords = headline.split(" ");
