@@ -456,7 +456,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
               {localize(profile.location, language)} · {language === "en" ? "Global technology leader" : "글로벌 테크놀로지 리더"}
             </p>
-            <h1 className="max-w-5xl text-[clamp(3.35rem,8vw,8.35rem)] font-black leading-[1.02] tracking-[-0.025em]">
+            <h1 className="max-w-5xl text-[clamp(3.15rem,7.5vw,7.8rem)] font-black leading-[0.92] tracking-[-0.025em]">
               {headlineWords.map((word, index) => (
                 <span key={`${word}-${index}`} className={index === emphasisIndex ? "text-[var(--accent)]" : ""}>
                   {word}{index < headlineWords.length - 1 ? " " : ""}
@@ -466,13 +466,15 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
             <p className="mt-7 max-w-3xl text-lg leading-8 text-[var(--muted)] md:text-xl">
               {localize(profile.summary, language)}
             </p>
+            <a className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-black text-[var(--ink)] underline decoration-[var(--accent)] decoration-2 underline-offset-4 transition hover:text-[var(--accent)]" href="https://www.linkedin.com/in/seoz" target="_blank" rel="noopener noreferrer">
+              <Linkedin size={17} aria-hidden="true" />
+              {copy.heroLinkedin}
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
           </div>
 
           {focus.items.length > 0 && <div className="mt-auto pt-8">
-            <a className="secondary-link" href={`mailto:${profile.contactEmail}`}>
-              {copy.contact}
-            </a>
-            <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-[var(--line)] py-4">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-[var(--line)] py-4">
               <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">{localize(focus.label, language)}</p>
               <ul className="flex flex-wrap gap-x-5 gap-y-2">
                 {focus.items.map((area, index) => (
@@ -490,9 +492,6 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
           <div className="absolute inset-2 translate-x-3 translate-y-3 border border-[var(--line-strong)] bg-[var(--surface-soft)] sm:inset-3 sm:translate-x-4 sm:translate-y-4" aria-hidden="true" />
           <div className="absolute -left-1 top-14 z-20 h-28 w-1 bg-[var(--accent)]" aria-hidden="true" />
           <div className="relative h-full overflow-hidden border border-[var(--line-strong)] bg-[var(--surface)] shadow-[0_28px_70px_rgba(16,36,62,0.16)]">
-            <div className="absolute left-5 top-5 z-10 border border-white/25 bg-[#10243e]/95 px-4 py-2 text-[11px] font-black uppercase tracking-[0.12em] text-white backdrop-blur">
-              {language === "en" ? "Open source since 2010" : "2010년부터 오픈소스 활동"}
-            </div>
             <ProfileImage src={profile.avatarUrl} name={localize(profile.name, language)} />
             <div className="absolute bottom-0 left-0 right-0 border-t border-white/15 bg-[#10243e]/95 p-5 text-white backdrop-blur sm:p-6">
               <div>
@@ -546,7 +545,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,.62fr)] lg:items-end">
             <div>
               <p className="section-eyebrow">{localize(press.eyebrow, language)}</p>
-              <h2 className="section-title">{localize(press.title, language)}</h2>
+              <h2 className="mt-3 max-w-3xl text-[clamp(2rem,3.4vw,3.5rem)] font-black leading-[1.05] tracking-[-0.035em] text-balance">{localize(press.title, language)}</h2>
             </div>
             <p className="max-w-xl text-base leading-7 text-[var(--muted)] lg:justify-self-end">{localize(press.body, language)}</p>
           </div>

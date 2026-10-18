@@ -11,6 +11,7 @@ export const uiCopy = {
     locationPrefix: "Based in",
     explore: "Explore the journey",
     contact: "Start a conversation",
+    heroLinkedin: "Connect on LinkedIn",
     focusLabel: "Current focus",
     focusAreas: ["Partner innovation", "Engineering leadership", "Open-source communities"],
     current: "Currently",
@@ -57,6 +58,7 @@ export const uiCopy = {
     themeDark: "Use dark theme",
   },
   ko: {
+    heroLinkedin: "LinkedIn에서 연결하기",
     navPress: "미디어",
     navWork: "활동",
     navStory: "멘토링",
