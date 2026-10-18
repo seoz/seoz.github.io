@@ -560,7 +560,9 @@ export function AdminDashboard() {
           <form className="admin-modal" onSubmit={(event) => { event.preventDefault(); saveTimeline(); }}>
             <div className="admin-modal-header"><div><p className="section-eyebrow">Timeline editor</p><h2 id="timeline-editor-title">{itemDraft.id ? "Edit item" : "New item"}</h2></div><button className="icon-button" type="button" onClick={() => setItemDraft(null)} aria-label="Close"><X size={17} /></button></div>
             <div className="admin-modal-body space-y-6">
+              <Field label="Section"><select className="admin-input" value={itemDraft.section} onChange={(event) => setItemDraft({ ...itemDraft, section: event.target.value })}>{orderedSections.map((section) => <option key={section.id} value={section.id}>{section.title.en}</option>)}</select></Field>
               <LocalizedFields label="Title" value={itemDraft.title} onChange={(title) => setItemDraft({ ...itemDraft, title })} />
+              <Field label="Date / period"><input className="admin-input" value={itemDraft.period} onChange={(event) => setItemDraft({ ...itemDraft, period: event.target.value })} placeholder="2026-08-25 or 2015 — Present" /></Field>
               <LocalizedFields label="Role" value={itemDraft.role} onChange={(role) => setItemDraft({ ...itemDraft, role })} />
               <LocalizedFields label="Organization / event" value={itemDraft.organization} onChange={(organization) => setItemDraft({ ...itemDraft, organization })} />
               <LocalizedFields label="Location" value={itemDraft.location} onChange={(location) => setItemDraft({ ...itemDraft, location })} />
@@ -606,10 +608,7 @@ export function AdminDashboard() {
                   </div>
                 )}
               </fieldset>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Date / period"><input className="admin-input" value={itemDraft.period} onChange={(event) => setItemDraft({ ...itemDraft, period: event.target.value })} placeholder="2026-08-25 or 2015 — Present" /></Field>
-                <Field label="Section"><select className="admin-input" value={itemDraft.section} onChange={(event) => setItemDraft({ ...itemDraft, section: event.target.value })}>{orderedSections.map((section) => <option key={section.id} value={section.id}>{section.title.en}</option>)}</select></Field>
-              </div>
+
               <fieldset><legend className="mb-3 text-xs font-black uppercase tracking-[0.1em] text-[var(--muted)]">Labels</legend><div className="flex flex-wrap gap-2">{orderedLabels.map((label) => { const selected = itemDraft.tags.includes(label.id); return <button key={label.id} type="button" className={`filter-button ${selected ? "active" : ""}`} onClick={() => setItemDraft({ ...itemDraft, tags: selected ? itemDraft.tags.filter((tag) => tag !== label.id) : [...itemDraft.tags, label.id] })}><span className="h-2 w-2 rounded-full" style={{ backgroundColor: label.accent }} />{label.name.en}</button>; })}</div></fieldset>
               <label className="flex items-center gap-3 text-sm font-black"><input type="checkbox" checked={itemDraft.featured} onChange={(event) => setItemDraft({ ...itemDraft, featured: event.target.checked })} /> Feature this item</label>
               <div className="grid gap-4 sm:grid-cols-[1fr_auto]"><Field label="Thumbnail URL"><input className="admin-input" value={itemDraft.imageUrl} onChange={(event) => setItemDraft({ ...itemDraft, imageUrl: event.target.value })} /></Field><Field label="Upload"><label className="upload-box min-h-[45px]"><ImagePlus size={18} /><span>Choose image</span><input className="sr-only" type="file" accept="image/*" onChange={(event) => uploadImage(event, "timeline")} /></label></Field></div>
