@@ -18,6 +18,47 @@ service cloud.firestore {
         && value.ko.size() <= 12000;
     }
 
+    function validPressText(value) {
+      return validLocalized(value) && value.en.size() > 0 && value.ko.size() > 0;
+    }
+
+    function validPressUrl(value) {
+      return value is string && value.size() <= 2048
+        && value.matches('https?://[^\\s]+');
+    }
+
+    function validPressCard(card) {
+      return card is map
+        && card.keys().hasOnly(['id', 'kind', 'meta', 'title', 'image', 'imageAlt', 'url'])
+        && card.id is string && card.id.matches('[a-zA-Z0-9_-]{1,80}')
+        && card.kind in ['linkedin', 'book', 'video', 'article']
+        && validPressText(card.meta) && validPressText(card.title) && validPressText(card.imageAlt)
+        && card.image is string && card.image.size() <= 2048
+        && (card.image == '' || validPressUrl(card.image) || card.image.matches('/[a-zA-Z0-9_][a-zA-Z0-9_./-]*'))
+        && validPressUrl(card.url);
+    }
+
+    function validPressIntroduction(data) {
+      return data.keys().hasOnly(['id', 'eyebrow', 'title', 'body', 'cardIds'])
+        && data.id == 'main'
+        && validPressText(data.eyebrow) && validPressText(data.title) && validPressText(data.body)
+        && data.cardIds is list && data.cardIds.size() <= 12
+        && data.cardIds.toSet().size() == data.cardIds.size()
+        && (data.cardIds.size() <= 0 || (data.cardIds[0] is string && data.cardIds[0] != 'main' && data.cardIds[0].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 1 || (data.cardIds[1] is string && data.cardIds[1] != 'main' && data.cardIds[1].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 2 || (data.cardIds[2] is string && data.cardIds[2] != 'main' && data.cardIds[2].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 3 || (data.cardIds[3] is string && data.cardIds[3] != 'main' && data.cardIds[3].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 4 || (data.cardIds[4] is string && data.cardIds[4] != 'main' && data.cardIds[4].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 5 || (data.cardIds[5] is string && data.cardIds[5] != 'main' && data.cardIds[5].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 6 || (data.cardIds[6] is string && data.cardIds[6] != 'main' && data.cardIds[6].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 7 || (data.cardIds[7] is string && data.cardIds[7] != 'main' && data.cardIds[7].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 8 || (data.cardIds[8] is string && data.cardIds[8] != 'main' && data.cardIds[8].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 9 || (data.cardIds[9] is string && data.cardIds[9] != 'main' && data.cardIds[9].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 10 || (data.cardIds[10] is string && data.cardIds[10] != 'main' && data.cardIds[10].matches('[a-zA-Z0-9_-]{1,80}')))
+        && (data.cardIds.size() <= 11 || (data.cardIds[11] is string && data.cardIds[11] != 'main' && data.cardIds[11].matches('[a-zA-Z0-9_-]{1,80}')))
+        ;
+    }
+
     function validProfile(data) {
       return data.keys().hasOnly([
           'id', 'name', 'title', 'headline', 'summary', 'contactEmail',
@@ -91,6 +132,15 @@ service cloud.firestore {
         && data.order >= 0
         && data.order <= 10000
         && data.updatedAt is string;
+    }
+
+    match /press/{pressId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && (
+        (pressId == 'main' && validPressIntroduction(request.resource.data))
+        || (pressId != 'main' && request.resource.data.id == pressId && validPressCard(request.resource.data))
+      );
+      allow delete: if isAdmin() && pressId != 'main';
     }
 
     match /profile/{profileId} {

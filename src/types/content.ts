@@ -91,6 +91,7 @@ export type PortfolioLabel = {
 };
 
 export type PortfolioContent = {
+  press: PressContent;
   profile: Profile;
   timeline: TimelineItem[];
   sections: PortfolioSection[];

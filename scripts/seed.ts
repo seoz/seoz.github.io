@@ -1,7 +1,7 @@
 import { createRequire } from "node:module";
 import { applicationDefault, getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { seedLabels, seedProfile, seedSections, seedTimeline } from "../src/data/seed";
+import { seedContent, seedLabels, seedProfile, seedSections, seedTimeline } from "../src/data/seed";
 
 const projectId = process.env.FIREBASE_PROJECT_ID;
 const configuredDatabaseId = process.env.FIREBASE_DATABASE_ID;
@@ -14,6 +14,8 @@ const databaseId: string = configuredDatabaseId;
 
 const documents = [
   { path: "profile/main", data: seedProfile },
+  { path: "press/main", data: { id: "main", eyebrow: seedContent.press.eyebrow, title: seedContent.press.title, body: seedContent.press.body, cardIds: seedContent.press.cards.map((card) => card.id) } },
+  ...seedContent.press.cards.map((card) => ({ path: `press/${card.id}`, data: card })),
   ...seedTimeline.map((item) => ({ path: `timeline/${item.id}`, data: item })),
   ...seedSections.map((section) => ({ path: `sections/${section.id}`, data: section })),
   ...seedLabels.map((label) => ({ path: `labels/${label.id}`, data: label })),

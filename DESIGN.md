@@ -28,6 +28,10 @@ Localized fields are maps with exactly `en` and `ko` string keys. This avoids du
 
 Identity and global presentation data: localized name, title, headline, summary, location, contact email, avatar URL, social links, and an ISO update timestamp.
 
+### `press/main` and `press/{cardId}`
+
+`main` holds bilingual `eyebrow`, `title`, `body`, and a unique ordered `cardIds` list (maximum 12). Each card document has a matching `id`, a `kind` enum, bilingual `meta`, `title`, and `imageAlt`, plus `image` and `url`. Section configuration cannot be deleted; removing all cards explicitly leaves the introduction visible. Card writes and removal are admin-only; section and card edits publish atomically. Missing configuration preserves seed content for existing installations without a migration.
+
 ### `timeline/{itemId}`
 
 An ordered activity entity containing localized title, role, organization, location, and Markdown description; period; external links; label IDs; section ID; optional image; feature flag; numeric order; and timestamp. An optional `highlights` list represents compact sub-entries with bilingual titles and notes, one image, and multiple links. The parent Markdown description remains the fallback for older records.
@@ -76,7 +80,7 @@ Firestore Rules cannot deeply iterate arbitrary nested arrays. The rule set ther
 - The hero uses a concise bilingual promise about turning ideas into impact alongside a neutral offset editorial portrait frame, a high-contrast information panel, broad regional location copy without precise coordinates, and a compact bilingual focus strip that uses the former empty lower-left area.
 - The compact statistics strip calculates completed Google tenure from March 2015 at runtime and keeps it visually dominant; the six-year Samsung and 6+ year startup tenures are grouped as supporting experience without crowding the page.
 - The compact bilingual Donation Mentoring and Connect sections follow the complete archive, in that order. Connect uses the lighter elevated surface with stronger top and bottom rules. Mentoring has one explicit external profile link and remains bundled editorial content rather than a Firestore collection.
-- Press card defaults are extracted into the typed `src/data/press.ts` module. The Press & Interviews section is compact bundled editorial content with English and Korean labels, source-specific card imagery under `public/press/`, and direct external links. It does not add a Firestore collection or broaden the security rules.
+- The content hook subscribes to `press/main` and `press/{cardId}` through one collection snapshot. Missing or malformed configuration uses the tested seed fallback; explicitly empty card lists remain empty. Each card has its own document to stay within Firestore rule evaluation limits. The collection allows public reads and verified Google admin writes, with explicit identity and full schema validation. Image uploads retain the existing admin-only Storage path and bounds.
 - Empty filters have a purposeful reset state.
 - Loading remote content uses motion-respecting skeletons.
 - Markdown is rendered with `react-markdown`; raw HTML is not enabled.

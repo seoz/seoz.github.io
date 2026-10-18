@@ -1,3 +1,4 @@
+import { seedPress } from "@/src/data/press";
 import { profileArchiveTimeline } from "@/src/data/profileArchive";
 import type { PortfolioContent, PortfolioLabel, PortfolioSection, Profile } from "@/src/types/content";
 
@@ -47,6 +48,7 @@ export const seedSections: PortfolioSection[] = [
 export const seedTimeline = profileArchiveTimeline;
 
 export const seedContent: PortfolioContent = {
+  press: seedPress,
   profile: seedProfile,
   timeline: seedTimeline,
   sections: seedSections,

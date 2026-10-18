@@ -85,6 +85,7 @@ No Gemini integration is used. If one is added later, keep its key in Firebase S
 ## Content model
 
 - `profile/main`: bilingual identity, headline, summary, contact, portrait, and social links.
+- `press/main`: bilingual `eyebrow`, `title`, `body`, and `cardIds` defining the display order of up to 12 cards. `press/{cardId}` contains `id`, `kind` (`linkedin`, `book`, `video`, `article`), bilingual `meta`, `title`, `imageAlt`, `image`, and `url`. A missing or invalid configuration uses the bundled fallback; an explicitly empty card list stays empty. Section writes commit the introduction, cards, order, and removals atomically. No manual reseeding is required.
 - `timeline/{id}`: bilingual activity records with dates, roles, organizations, Markdown descriptions, links, labels, images, sections, and ordering. An optional bounded `highlights` list adds bilingual per-line notes, images, and links while preserving the Markdown description as a compatibility fallback.
 - `sections/{id}`: bilingual group names, visibility, and ordering.
 - `labels/{id}`: bilingual filter labels and accessible accent colors.
@@ -124,3 +125,9 @@ If moving DNS to Gabia, first copy the full existing zone with the old website d
 In Firebase Hosting, connect `seoz.com` using Advanced Setup, complete the ownership and certificate challenges, and wait for certificate readiness before changing web traffic records. Follow the current console's exact DNS values; challenge tokens can change. Keep the ownership TXT record for renewal. Connect `www.seoz.com` separately and redirect it to `seoz.com`. Firebase manages HTTPS certificates.
 
 Verify HTTP-to-HTTPS behavior, both hostnames, direct `/admin/` navigation, sign-in, HTTPS-only assets, old URLs, and email after cutover. Keep Cafe24 and old DNS values available for rollback during propagation. Use Firebase Hosting release history to roll back application releases. Cancel old hosting only after checking its remaining DNS, mail, and file dependencies.
+
+## Press validation
+
+Run `npx tsx scripts/test-press.ts` to check the seed fallback and Press schema. Run `npx firebase emulators:exec --only firestore --project demo-portfolio 'npx tsx scripts/test-press.ts --emulator'` to verify the same payloads against Firestore rules, including public reads, card limits, safe URLs, bilingual fields, and rejected unauthorized writes. This uses a local demo project only.
+
+Deploy the updated Firestore rules before writing Press records to the live database (`npm run firebase:deploy`). Press text is limited to 12,000 characters per language, URLs to 2,048 characters, and card count to 12. Destination links accept HTTP(S); images accept HTTP(S), local paths, or an empty value. Image uploads reuse the existing admin-only `portfolio/*` Storage path and must be smaller than 5 MB. The new `press` collection allows public reads and restricts writes to the verified Google admin, with explicit document identity and schema validation. Storage permissions are unchanged.

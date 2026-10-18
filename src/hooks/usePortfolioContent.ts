@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { resolvePressContent } from "@/src/lib/press";
 import { seedContent } from "@/src/data/seed";
 import { firebaseEnvironment, getFirebaseServices } from "@/src/lib/firebase";
 import type { PortfolioContent, PortfolioLabel, PortfolioSection, Profile, TimelineItem } from "@/src/types/content";
@@ -19,6 +20,7 @@ export function usePortfolioContent(): {
     if (!firebaseEnvironment.configured) return;
 
     const { db } = getFirebaseServices();
+    let press = seedContent.press;
     let profile = seedContent.profile;
     let timeline = seedContent.timeline;
     let sections = seedContent.sections;
@@ -27,7 +29,7 @@ export function usePortfolioContent(): {
 
     const publish = () => {
       hasReceivedData = true;
-      setContent({ profile, timeline, sections, labels });
+      setContent({ profile, press, timeline, sections, labels });
       setSource("firebase");
       setLoading(false);
     };
@@ -41,6 +43,14 @@ export function usePortfolioContent(): {
     };
 
     const unsubscribers = [
+      onSnapshot(
+        collection(db, "press"),
+        (snapshot) => {
+          press = resolvePressContent(snapshot.docs.map((item) => ({ id: item.id, data: item.data() })), seedContent.press);
+          publish();
+        },
+        handleError,
+      ),
       onSnapshot(
         doc(db, "profile", "main"),
         (snapshot) => {
