@@ -468,13 +468,28 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
         </nav>
       </header>
 
-      <section id="top" className="mx-auto grid w-full max-w-[1480px] gap-8 px-5 pb-8 pt-10 sm:px-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(340px,.55fr)] lg:px-12 lg:pb-12 lg:pt-12">
-        <div className="flex min-w-0 flex-col">
-          <div>
-            <p className="mb-6 flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)]">
+      <section id="top" className="mx-auto grid w-full max-w-[1480px] gap-8 px-5 pb-8 pt-10 sm:px-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(340px,.55fr)] lg:gap-y-6 lg:px-12 lg:pb-12 lg:pt-12">
+        <p className="flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-[var(--accent)] lg:col-start-1 lg:row-start-1">
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
               {localize(profile.location, language)} · {language === "en" ? "Global technology leader" : "글로벌 테크놀로지 리더"}
             </p>
+        <aside className="relative min-h-[430px] p-2 lg:col-start-2 lg:row-span-2 lg:row-start-1 sm:min-h-[520px] sm:p-3">
+          <div className="absolute inset-2 translate-x-3 translate-y-3 border border-[var(--line-strong)] bg-[var(--surface-soft)] sm:inset-3 sm:translate-x-4 sm:translate-y-4" aria-hidden="true" />
+          <div className="absolute -left-1 top-14 z-20 h-28 w-1 bg-[var(--accent)]" aria-hidden="true" />
+          <div className="relative h-full overflow-hidden border border-[var(--line-strong)] bg-[var(--surface)] shadow-[0_28px_70px_rgba(16,36,62,0.16)]">
+            <div className="relative border-b border-white/15 lg:absolute lg:left-0 lg:right-0 lg:bottom-0 lg:z-10 lg:border-b-0 lg:border-t bg-[#10243e]/95 p-5 text-white backdrop-blur sm:p-6">
+              <div>
+                <p className="text-[11px] font-black uppercase tracking-[0.15em] text-[#ff7a68]">{copy.current}</p>
+                <p className="mt-1 text-lg font-black sm:text-xl">YouTube · Google</p>
+                <p className="mt-2 max-w-sm text-sm font-semibold leading-6 text-white/70 sm:text-base">{localize(profile.title, language)}</p>
+              </div>
+            </div>
+            <ProfileImage src={profile.avatarUrl} name={localize(profile.name, language)} />
+          </div>
+        </aside>
+        <div className="flex min-w-0 flex-col lg:col-start-1 lg:row-start-2">
+          <div>
+
             {headline.trim() && <h1 className="max-w-5xl text-[clamp(3.15rem,7.5vw,7.8rem)] font-black leading-[0.92] tracking-[-0.025em]">
               {headlineWords.map((word, index) => (
                 <span key={`${word}-${index}`} className={index === emphasisIndex ? "text-[var(--accent)]" : ""}>
@@ -507,20 +522,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
           </div>}
         </div>
 
-        <aside className="relative min-h-[430px] p-2 sm:min-h-[520px] sm:p-3">
-          <div className="absolute inset-2 translate-x-3 translate-y-3 border border-[var(--line-strong)] bg-[var(--surface-soft)] sm:inset-3 sm:translate-x-4 sm:translate-y-4" aria-hidden="true" />
-          <div className="absolute -left-1 top-14 z-20 h-28 w-1 bg-[var(--accent)]" aria-hidden="true" />
-          <div className="relative h-full overflow-hidden border border-[var(--line-strong)] bg-[var(--surface)] shadow-[0_28px_70px_rgba(16,36,62,0.16)]">
-            <ProfileImage src={profile.avatarUrl} name={localize(profile.name, language)} />
-            <div className="absolute bottom-0 left-0 right-0 border-t border-white/15 bg-[#10243e]/95 p-5 text-white backdrop-blur sm:p-6">
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.15em] text-[#ff7a68]">{copy.current}</p>
-                <p className="mt-1 text-lg font-black sm:text-xl">YouTube · Google</p>
-                <p className="mt-2 max-w-sm text-sm font-semibold leading-6 text-white/70 sm:text-base">{localize(profile.title, language)}</p>
-              </div>
-            </div>
-          </div>
-        </aside>
+
       </section>
 
       <section className="border-y border-[var(--line)] bg-[var(--surface-soft)]">

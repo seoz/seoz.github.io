@@ -152,4 +152,8 @@ Archive entry labels follow the title inline as fixed-height compact badges and 
 
 The admin timeline editor starts with Section, followed by the bilingual Title fields and Date / period, before the remaining item fields.
 
+On mobile and tablet (below the `lg` breakpoint), the hero portrait appears before the headline and introduction. At desktop widths, the introduction stays on the left and the portrait on the right. The portrait appears once in the document and precedes the introduction in reading order.
+
 Header and footer name labels use **Admin → Profile → Name**, selecting the English or Korean field for the active language. Live profile updates and the bundled profile fallback use the same localization path; no schema or security rules change is needed.
+
+On mobile and tablet, the location/leader line sits above the portrait and the current-role panel occupies its own row above the photo without covering it. Desktop keeps the location above the left introduction and the role overlay at the bottom of the right portrait.
