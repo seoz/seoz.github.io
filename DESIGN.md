@@ -76,7 +76,7 @@ Firestore Rules cannot deeply iterate arbitrary nested arrays. The rule set ther
 - The hero uses a concise bilingual promise about turning ideas into impact alongside a neutral offset editorial portrait frame, a high-contrast information panel, broad regional location copy without precise coordinates, and a compact bilingual focus strip that uses the former empty lower-left area.
 - The compact statistics strip calculates completed Google tenure from March 2015 at runtime and keeps it visually dominant; the six-year Samsung and 6+ year startup tenures are grouped as supporting experience without crowding the page.
 - The compact bilingual Donation Mentoring and Connect sections follow the complete archive, in that order. Connect uses the lighter elevated surface with stronger top and bottom rules. Mentoring has one explicit external profile link and remains bundled editorial content rather than a Firestore collection.
-- The Press & Interviews section is compact bundled editorial content with English and Korean labels, source-specific card imagery under `public/press/`, and direct external links. It does not add a Firestore collection or broaden the security rules.
+- Press card defaults are extracted into the typed `src/data/press.ts` module. The Press & Interviews section is compact bundled editorial content with English and Korean labels, source-specific card imagery under `public/press/`, and direct external links. It does not add a Firestore collection or broaden the security rules.
 - Empty filters have a purposeful reset state.
 - Loading remote content uses motion-respecting skeletons.
 - Markdown is rendered with `react-markdown`; raw HTML is not enabled.

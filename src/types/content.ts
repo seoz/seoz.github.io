@@ -11,6 +11,23 @@ export type SocialLink = {
   url: string;
 };
 
+export type PressCard = {
+  id: string;
+  kind: "linkedin" | "book" | "video" | "article";
+  meta: LocalizedText;
+  title: LocalizedText;
+  image: string;
+  imageAlt: LocalizedText;
+  url: string;
+};
+
+export type PressContent = {
+  eyebrow: LocalizedText;
+  title: LocalizedText;
+  body: LocalizedText;
+  cards: PressCard[];
+};
+
 export type Profile = {
   id: "main";
   name: LocalizedText;
