@@ -119,6 +119,9 @@ function TimelineHighlightEditor({
   index,
   onChange,
   onRemove,
+  onMove,
+  lineCount,
+  busy,
   onUpload,
   labels,
 }: {
@@ -127,17 +130,28 @@ function TimelineHighlightEditor({
   index: number;
   onChange: (next: TimelineHighlight) => void;
   onRemove: () => void;
+  onMove: (direction: -1 | 1) => void;
+  lineCount: number;
+  busy: boolean;
   onUpload: (event: ChangeEvent<HTMLInputElement>) => void;
 }) {
   const links = highlight.links ?? [];
 
   return (
     <article className="space-y-4 border border-[var(--line)] bg-[var(--canvas)] p-4 sm:p-5">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="font-mono text-xs font-black text-[var(--accent)]">Line {String(index + 1).padStart(2, "0")}</p>
-        <button className="row-action danger" type="button" aria-label={`Remove line ${index + 1}`} onClick={onRemove}>
-          <Trash2 size={15} />
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button className="filter-button" type="button" aria-label={`Move line ${index + 1} up`} disabled={busy || index === 0} onClick={() => onMove(-1)}>
+            <ArrowUp size={15} aria-hidden="true" /> Move up
+          </button>
+          <button className="filter-button" type="button" aria-label={`Move line ${index + 1} down`} disabled={busy || index === lineCount - 1} onClick={() => onMove(1)}>
+            <ArrowDown size={15} aria-hidden="true" /> Move down
+          </button>
+          <button className="row-action danger" type="button" aria-label={`Remove line ${index + 1}`} onClick={onRemove}>
+            <Trash2 size={15} />
+          </button>
+        </div>
       </div>
       <LocalizedFields label="Line title" value={highlight.title} onChange={(title) => onChange({ ...highlight, title })} />
       <LocalizedFields label="Short detail (optional)" value={highlight.description} onChange={(description) => onChange({ ...highlight, description })} multiline />
@@ -599,6 +613,17 @@ export function AdminDashboard() {
                         highlight={highlight}
                         labels={orderedLabels}
                         index={index}
+                        lineCount={(itemDraft.highlights ?? []).length}
+                        busy={saving}
+                        onMove={(direction) => setItemDraft((draft) => {
+                          if (!draft) return draft;
+                          const highlights = [...(draft.highlights ?? [])];
+                          const currentIndex = highlights.findIndex((entry) => entry.id === highlight.id);
+                          const targetIndex = currentIndex + direction;
+                          if (currentIndex < 0 || targetIndex < 0 || targetIndex >= highlights.length) return draft;
+                          [highlights[currentIndex], highlights[targetIndex]] = [highlights[targetIndex], highlights[currentIndex]];
+                          return { ...draft, highlights };
+                        })}
                         onChange={(nextHighlight) => {
                           const highlights = [...(itemDraft.highlights ?? [])];
                           highlights[index] = nextHighlight;

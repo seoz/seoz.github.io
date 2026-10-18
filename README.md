@@ -160,4 +160,4 @@ On mobile and tablet, the location/leader line sits above the portrait and the c
 
 The mobile header is a single 64px row containing the localized name, navigation, theme toggle, and language controls. Navigation can scroll horizontally on narrow screens without adding a second row; desktop retains the 72px header.
 
-Upload results follow the entry identity if a line is removed or reordered. These controls reuse the current schema and security rules.
+In the admin timeline editor, each detailed line has **Move up** and **Move down** buttons, including keyboard access and disabled boundary controls. Reordering moves the complete bilingual entry with its labels, photos, and links; **Save item** publishes the chosen order through the existing ordered highlights/entry IDs. Upload results follow the entry identity if a line is removed or reordered. These controls reuse the current schema and security rules.
