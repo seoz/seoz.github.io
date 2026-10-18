@@ -22,7 +22,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { usePortfolioContent } from "@/src/hooks/usePortfolioContent";
-import { talkEngagementMetrics } from "@/src/data/profileArchive";
+import { getTalkMetrics } from "@/src/lib/talkMetrics";
 import { DEFAULT_LANGUAGE, localize, normalizeLanguage, uiCopy } from "@/src/lib/i18n";
 import type { Language, PortfolioContent, TimelineItem } from "@/src/types/content";
 
@@ -672,6 +672,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
               {groupedArchive.map(({ section, items }, sectionIndex) => {
                 const sectionAccent = archiveSectionAccents[section.id] ?? "var(--accent)";
                 const isTalksSection = section.id === "talks";
+                const talkEngagementMetrics = getTalkMetrics(items);
                 const countLabel = isTalksSection
                   ? language === "en"
                     ? `${talkEngagementMetrics.engagements}+ engagements · ${talkEngagementMetrics.activeYears} years`

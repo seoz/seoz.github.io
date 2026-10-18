@@ -366,17 +366,6 @@ function buildTalkHighlights(digest: YearDigest): TimelineHighlight[] {
   });
 }
 
-// Each format count classifies one documented digest entry by its primary format.
-// A few entries cover multiple appearances, so the UI presents these as minimums.
-export const talkEngagementMetrics = {
-  engagements: talkDigests.reduce((total, digest) => total + digest.en.length, 0),
-  activeYears: talkDigests.length,
-  talksLecturesPresentations: 46,
-  interviewsMedia: 7,
-  panelsRoundtables: 5,
-  mentoringSessions: 2,
-} as const;
-
 const talkItems = talkDigests.map((digest, index) =>
   archiveItem({
     id: `talks-${digest.year}`,
