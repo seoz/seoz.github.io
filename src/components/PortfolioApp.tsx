@@ -475,13 +475,13 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
               <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
               {localize(profile.location, language)} · {language === "en" ? "Global technology leader" : "글로벌 테크놀로지 리더"}
             </p>
-            <h1 className="max-w-5xl text-[clamp(3.15rem,7.5vw,7.8rem)] font-black leading-[0.92] tracking-[-0.025em]">
+            {headline.trim() && <h1 className="max-w-5xl text-[clamp(3.15rem,7.5vw,7.8rem)] font-black leading-[0.92] tracking-[-0.025em]">
               {headlineWords.map((word, index) => (
                 <span key={`${word}-${index}`} className={index === emphasisIndex ? "text-[var(--accent)]" : ""}>
                   {word}{index < headlineWords.length - 1 ? " " : ""}
                 </span>
               ))}
-            </h1>
+            </h1>}
             <p className="mt-7 max-w-3xl text-lg leading-8 text-[var(--muted)] md:text-xl">
               {localize(profile.summary, language)}
             </p>

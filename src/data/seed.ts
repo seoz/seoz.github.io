@@ -17,7 +17,7 @@ export const seedProfile: Profile = {
   },
   name: { en: "Daniel Juyung Seo", ko: "서주영" },
   title: { en: "Global Head of Partner Innovations & Engagement", ko: "글로벌 파트너 혁신 및 참여 총괄" },
-  headline: { en: "Daniel turns ideas into impact.", ko: "Daniel은 아이디어를 실질적인 영향력으로 바꿉니다." },
+  headline: { en: "", ko: "" },
   summary: {
     en: "At Google, I lead global partner innovation and engagement for YouTube Device Operations & Partner Engineering—bringing engineering teams, open-source communities, and partners together at a global scale.",
     ko: "Google YouTube 디바이스 운영 및 파트너 엔지니어링 조직에서 글로벌 파트너 혁신과 참여를 이끌며, 엔지니어링 팀과 오픈소스 커뮤니티, 파트너를 전 세계적으로 연결합니다.",
