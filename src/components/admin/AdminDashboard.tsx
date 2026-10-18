@@ -1,5 +1,6 @@
 "use client";
 
+import { entryImages, normalizeTalkItem, validEntry } from "@/src/lib/talkEntries";
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import Link from "next/link";
 import {
@@ -119,7 +120,9 @@ function TimelineHighlightEditor({
   onChange,
   onRemove,
   onUpload,
+  labels,
 }: {
+  labels: PortfolioLabel[];
   highlight: TimelineHighlight;
   index: number;
   onChange: (next: TimelineHighlight) => void;
@@ -138,18 +141,18 @@ function TimelineHighlightEditor({
       </div>
       <LocalizedFields label="Line title" value={highlight.title} onChange={(title) => onChange({ ...highlight, title })} />
       <LocalizedFields label="Short detail (optional)" value={highlight.description} onChange={(description) => onChange({ ...highlight, description })} multiline />
-      <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
-        <Field label="Picture URL (optional)">
-          <input className="admin-input" value={highlight.imageUrl} onChange={(event) => onChange({ ...highlight, imageUrl: event.target.value })} placeholder="https://… or /press/image.jpg" />
-        </Field>
-        <Field label="Upload">
-          <label className="upload-box min-h-[45px]">
-            <ImagePlus size={18} />
-            <span>Choose image</span>
-            <input className="sr-only" type="file" accept="image/*" onChange={onUpload} />
-          </label>
-        </Field>
-      </div>
+      <fieldset><legend className="mb-2 font-bold">Item labels</legend><div className="flex flex-wrap gap-2">{labels.map((label) => {
+        const selected = (highlight.tags ?? []).includes(label.id);
+        return <button type="button" key={label.id} aria-pressed={selected} className={`filter-button ${selected ? "active" : ""}`} onClick={() => onChange({ ...highlight, tags: selected ? (highlight.tags ?? []).filter((tag) => tag !== label.id) : [...(highlight.tags ?? []), label.id] })}>{label.name.en} · {label.name.ko}</button>;
+      })}</div></fieldset>
+      <fieldset className="space-y-3"><legend className="font-bold">Photos (up to 6)</legend>
+        {entryImages(highlight).map((url, photoIndex) => <div key={photoIndex} className="flex gap-2">
+          <input className="admin-input" aria-label={`Photo ${photoIndex + 1} URL`} value={url} onChange={(event) => onChange({ ...highlight, images: entryImages(highlight).map((image, i) => i === photoIndex ? event.target.value : image) })} />
+          <button type="button" className="row-action danger" aria-label={`Remove photo ${photoIndex + 1}`} onClick={() => onChange({ ...highlight, imageUrl: "", images: entryImages(highlight).filter((_, i) => i !== photoIndex) })}><Trash2 size={15} /></button>
+        </div>)}
+        <button type="button" className="filter-button" disabled={entryImages(highlight).length >= 6} onClick={() => onChange({ ...highlight, images: [...entryImages(highlight), ""] })}>Add photo URL</button>
+        <input aria-label="Upload item photo" type="file" accept="image/*" disabled={entryImages(highlight).length >= 6} onChange={onUpload} />
+      </fieldset>
       <fieldset>
         <legend className="text-xs font-black uppercase tracking-[0.1em] text-[var(--muted)]">Line links</legend>
         <div className="mb-3 flex items-center justify-between gap-3">
@@ -157,6 +160,7 @@ function TimelineHighlightEditor({
           <button
             type="button"
             className="text-xs font-black text-[var(--accent)]"
+            disabled={links.length >= 3}
             onClick={() => onChange({ ...highlight, links: [...links, { id: crypto.randomUUID(), label: emptyLocalized(), url: "" }] })}
           >
             + Add link
@@ -329,7 +333,8 @@ export function AdminDashboard() {
         const highlights = [...(draft.highlights ?? [])];
         const highlight = highlights[highlightIndex];
         if (!highlight) return draft;
-        highlights[highlightIndex] = { ...highlight, imageUrl: url };
+        if (entryImages(highlight).length >= 6) return draft;
+        highlights[highlightIndex] = { ...highlight, images: [...entryImages(highlight), url] };
         return { ...draft, highlights };
       });
       setNotice("Image uploaded. Save the record to publish it.");
@@ -356,11 +361,23 @@ export function AdminDashboard() {
 
   const saveTimeline = () => {
     if (!itemDraft || !itemDraft.title.en.trim() || !itemDraft.title.ko.trim()) return setNotice("English and Korean titles are required.");
-    if ((itemDraft.highlights ?? []).some((highlight) => !highlight.title.en.trim() || !highlight.title.ko.trim())) return setNotice("Every detailed line needs an English and Korean title.");
+    if ((itemDraft.highlights ?? []).length > 40 || (itemDraft.highlights ?? []).some((highlight) => !validEntry(highlight))) return setNotice("Check each item: bilingual titles, up to 12 labels and 3 links, and up to 6 valid HTTP(S) or local photo URLs are required.");
     const id = itemDraft.id || crypto.randomUUID();
     const next = { ...itemDraft, id, updatedAt: new Date().toISOString() };
-    runMutation(() => setDoc(doc(db, "timeline", id), next), itemDraft.id ? "Timeline item updated." : "Timeline item added.");
-    setItemDraft(null);
+    runMutation(async () => {
+      if (next.section === "talks" && /^\d{4}$/.test(next.period.trim())) {
+        const batch = writeBatch(db);
+        const entries = next.highlights ?? [];
+        const entryIds = entries.map((entry) => `${id}--${entry.id}`);
+        batch.set(doc(db, "timeline", id), { ...next, highlights: [], entryIds });
+        entries.forEach((entry, index) => batch.set(doc(db, "talkEntries", entryIds[index]), { id: entryIds[index], yearId: id, entry }));
+        (itemDraft.entryIds ?? []).filter((entryId) => !entryIds.includes(entryId)).forEach((entryId) => batch.delete(doc(db, "talkEntries", entryId)));
+        await batch.commit();
+      } else {
+        await setDoc(doc(db, "timeline", id), next);
+      }
+      setItemDraft(null);
+    }, itemDraft.id ? "Timeline item updated." : "Timeline item added.");
   };
 
   const navigation: Array<{ id: AdminTab; label: string; icon: ReactNode }> = [
@@ -507,7 +524,7 @@ export function AdminDashboard() {
                     <GripVertical className="hidden text-[var(--line-strong)] md:block" size={18} />
                     <p className="font-mono text-xs font-bold text-[var(--muted)]">{item.period}</p>
                     <div className="min-w-0"><h2 className="truncate text-base font-black">{item.title.en}</h2><p className="mt-1 truncate text-xs font-bold text-[var(--muted)]">{item.organization.en} · {item.section}</p></div>
-                    <div className="flex items-center gap-1 md:justify-self-end"><button className="row-action" aria-label="Move up" disabled={index === 0} onClick={() => moveTimeline(index, -1)}><ArrowUp size={15} /></button><button className="row-action" aria-label="Move down" disabled={index === orderedTimeline.length - 1} onClick={() => moveTimeline(index, 1)}><ArrowDown size={15} /></button><button className="row-action" aria-label="Edit item" onClick={() => setItemDraft({ ...item, highlights: item.highlights ?? [] })}><Pencil size={15} /></button><button className="row-action danger" aria-label="Delete item" onClick={() => { if (window.confirm(`Delete “${item.title.en}”?`)) runMutation(() => deleteDoc(doc(db, "timeline", item.id)), "Timeline item deleted."); }}><Trash2 size={15} /></button></div>
+                    <div className="flex items-center gap-1 md:justify-self-end"><button className="row-action" aria-label="Move up" disabled={index === 0} onClick={() => moveTimeline(index, -1)}><ArrowUp size={15} /></button><button className="row-action" aria-label="Move down" disabled={index === orderedTimeline.length - 1} onClick={() => moveTimeline(index, 1)}><ArrowDown size={15} /></button><button className="row-action" aria-label="Edit item" onClick={() => setItemDraft(normalizeTalkItem(item))}><Pencil size={15} /></button><button className="row-action danger" aria-label="Delete item" onClick={() => { if (window.confirm(`Delete “${item.title.en}”?`)) runMutation(async () => { const batch = writeBatch(db); batch.delete(doc(db, "timeline", item.id)); (item.entryIds ?? []).forEach((entryId) => batch.delete(doc(db, "talkEntries", entryId))); await batch.commit(); }, "Timeline item deleted."); }}><Trash2 size={15} /></button></div>
                   </article>
                 ))}
               </div>
@@ -552,10 +569,11 @@ export function AdminDashboard() {
                 <legend className="px-1 text-xs font-black uppercase tracking-[0.1em] text-[var(--muted)]">Detailed lines (optional)</legend>
                 <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                   <div>
-                    <p className="max-w-2xl text-xs leading-5 text-[var(--muted)]">Turn a simple list into individual entries only when useful. Each line can have a short bilingual note, one picture, and a few links.</p>
+                    <p className="max-w-2xl text-xs leading-5 text-[var(--muted)]">Turn a simple list into individual entries only when useful. Each line can have a short bilingual note, up to six photos, labels, and links. Manage available labels in the Labels tab. Items stay grouped under this year.</p>
                   </div>
                   <button
                     type="button"
+                    disabled={(itemDraft.highlights ?? []).length >= 40}
                     className="shrink-0 text-xs font-black text-[var(--accent)]"
                     onClick={() => setItemDraft({
                       ...itemDraft,
@@ -574,6 +592,7 @@ export function AdminDashboard() {
                       <TimelineHighlightEditor
                         key={highlight.id}
                         highlight={highlight}
+                        labels={orderedLabels}
                         index={index}
                         onChange={(nextHighlight) => {
                           const highlights = [...(itemDraft.highlights ?? [])];
