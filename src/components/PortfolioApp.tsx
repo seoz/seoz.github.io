@@ -1,6 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- Vinext serves local and Firebase-hosted images directly. */
 
+import { entryImages, filterTalkEntries } from "@/src/lib/talkEntries";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -195,13 +196,18 @@ function TimelineCard({
                 const highlightLinks = highlight.links.filter((link) => link.url.trim());
 
                 return (
-                  <li key={highlight.id} className="grid gap-3 py-3 first:pt-0 sm:grid-cols-[2rem_minmax(0,1fr)_auto] sm:gap-4">
+                  <li key={highlight.id} className="grid gap-3 py-3 first:pt-0 sm:grid-cols-[2rem_minmax(0,1fr)] sm:gap-4">
                     <span className="font-mono text-[10px] font-black leading-6 text-[var(--accent)]" aria-hidden="true">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="min-w-0">
-                      <div className="prose-copy text-sm font-semibold leading-6 text-[var(--muted)]">
+                      <div className="prose-copy text-sm font-semibold leading-6 text-[var(--muted)] [&_p]:inline">
                         <ReactMarkdown>{highlightTitle}</ReactMarkdown>
+                        {(highlight.tags ?? []).map((tag) => (
+                          <span key={tag} className="ml-2 inline-flex h-6 items-center whitespace-nowrap rounded-full border border-[var(--line)] px-2 align-middle text-[10px] font-bold leading-none text-[var(--muted)]">
+                            {labelLookup.get(tag)?.name ?? tag}
+                          </span>
+                        ))}
                       </div>
                       {highlightDescription && (
                         <div className="prose-copy mt-1 text-xs leading-5 text-[var(--muted)]">
@@ -224,14 +230,9 @@ function TimelineCard({
                         </div>
                       )}
                     </div>
-                    {highlight.imageUrl && (
-                      <img
-                        className="h-20 w-28 border border-[var(--line)] object-cover sm:ml-3"
-                        src={highlight.imageUrl}
-                        alt={highlightTitle}
-                        loading="lazy"
-                      />
-                    )}
+                    {entryImages(highlight).length > 0 && <div className="col-span-full flex flex-wrap items-start gap-2 sm:col-start-2">
+                      {entryImages(highlight).map((url, photoIndex) => <a key={`${url}-${photoIndex}`} href={url} target="_blank" rel="noreferrer"><img className="h-24 w-32 border border-[var(--line)] object-cover" src={url} alt={`${highlightTitle} (${photoIndex + 1})`} loading="lazy" /></a>)}
+                    </div>}
                   </li>
                 );
               })}
@@ -331,7 +332,9 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
     const queryText = search.trim().toLocaleLowerCase();
     return [...content.timeline]
       .sort((a, b) => a.order - b.order)
-      .filter((item) => activeTag === "all" || item.tags.includes(activeTag))
+      .map((item) => filterTalkEntries(item, activeTag, queryText, language))
+      .filter((item) => item.section === "talks" && item.highlights !== undefined
+        ? item.highlights.length > 0 : activeTag === "all" || item.tags.includes(activeTag))
       .filter((item) => {
         if (!queryText) return true;
         const haystack = [
@@ -625,7 +628,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
                 {labels.map((label) => (
                   <button key={label.id} className={`filter-button ${activeTag === label.id ? "active" : ""}`} onClick={() => setActiveTag(label.id)}>
                     <span className="h-2 w-2 rounded-full" style={{ backgroundColor: label.accent }} />
-                    {localize(label.name, language)}
+                    {localize(label.name, language)} <span className="font-mono">{content.timeline.reduce((count, item) => count + (item.section === "talks" && item.highlights !== undefined ? item.highlights.filter((entry) => (entry.tags ?? item.tags).includes(label.id)).length : Number(item.tags.includes(label.id))), 0)}</span>
                   </button>
                 ))}
               </div>
