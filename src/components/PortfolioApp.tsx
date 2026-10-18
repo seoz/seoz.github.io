@@ -1,6 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- Vinext serves local and Firebase-hosted images directly. */
 
+import { PhotoGallery } from "@/src/components/PhotoGallery";
 import { entryImages, filterTalkEntries } from "@/src/lib/talkEntries";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -230,9 +231,7 @@ function TimelineCard({
                         </div>
                       )}
                     </div>
-                    {entryImages(highlight).length > 0 && <div className="col-span-full flex flex-wrap items-start gap-2 sm:col-start-2">
-                      {entryImages(highlight).map((url, photoIndex) => <a key={`${url}-${photoIndex}`} href={url} target="_blank" rel="noreferrer"><img className="h-24 w-32 border border-[var(--line)] object-cover" src={url} alt={`${highlightTitle} (${photoIndex + 1})`} loading="lazy" /></a>)}
-                    </div>}
+                    {entryImages(highlight).length > 0 && <PhotoGallery images={entryImages(highlight)} title={highlightTitle} language={language} />}
                   </li>
                 );
               })}
