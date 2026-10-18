@@ -394,6 +394,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
   }, [content.sections, filteredItems, visibleSections]);
 
   const focus = profile.focus ?? seedProfile.focus!;
+  const talkEngagementMetrics = useMemo(() => getTalkMetrics(content.timeline), [content.timeline]);
   const press = content.press;
   const headline = localize(profile.headline, language);
   const headlineWords = headline.split(" ");
@@ -505,7 +506,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
       </section>
 
       <section className="border-y border-[var(--line)] bg-[var(--surface-soft)]">
-        <div className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px bg-[var(--line)] md:grid-cols-3">
           <div className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
             <p className="text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">30+</p>
             <p className="max-w-28 text-right text-sm font-bold leading-5 text-[var(--muted)] lg:text-base">{copy.stats[0]}</p>
@@ -528,16 +529,25 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
             </div>
           </div>
 
-          <div className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
-            <p className="text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">60+</p>
-            <p className="max-w-28 text-right text-sm font-bold leading-5 text-[var(--muted)] lg:text-base">{copy.stats[4]}</p>
-          </div>
+
 
           <div className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
             <p className="text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">3,250+</p>
             <p className="max-w-28 text-right text-sm font-bold leading-5 text-[var(--muted)] lg:text-base">{copy.stats[5]}</p>
           </div>
         </div>
+          <dl className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px border-t border-[var(--line)] bg-[var(--line)] sm:grid-cols-3" aria-label={copy.talkMetricsLabel}>
+            {[
+              [talkEngagementMetrics.talksLecturesPresentations, copy.talkMetricTalks],
+              [talkEngagementMetrics.interviewsMedia, copy.talkMetricMedia],
+              [talkEngagementMetrics.panelsRoundtables, copy.talkMetricPanels],
+            ].map(([value, label]) => (
+              <div key={label} className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
+                <dt className="order-2 max-w-40 text-right text-xs font-bold leading-5 text-[var(--muted)]">{label}</dt>
+                <dd className="order-1 text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.04em] text-[var(--accent)]">{value}</dd>
+              </div>
+            ))}
+          </dl>
       </section>
 
       <section id="press" className="scroll-mt-24 border-b border-[var(--line)] bg-[var(--surface-soft)] px-5 pb-10 pt-14 sm:px-8 sm:pt-16 lg:px-12 lg:pb-12 lg:pt-20">
