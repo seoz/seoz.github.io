@@ -301,7 +301,7 @@ export function AdminDashboard() {
     const file = event.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) return setNotice("Choose an image file.");
-    if (file.size > 5 * 1024 * 1024) return setNotice("Images must be smaller than 5 MB.");
+    if (file.size >= 5 * 1024 * 1024) return setNotice("Images must be smaller than 5 MB.");
     setSaving(true);
     try {
       const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
