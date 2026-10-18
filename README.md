@@ -151,3 +151,5 @@ The bundled profile has an empty headline in both languages. The hero renders it
 Archive entry labels follow the title inline as fixed-height compact badges and wrap with the text on narrow screens. Photos occupy a separate wrapping row below the entry text and links, so gallery images never stretch label height.
 
 The admin timeline editor starts with Section, followed by the bilingual Title fields and Date / period, before the remaining item fields.
+
+Header and footer name labels use **Admin → Profile → Name**, selecting the English or Korean field for the active language. Live profile updates and the bundled profile fallback use the same localization path; no schema or security rules change is needed.

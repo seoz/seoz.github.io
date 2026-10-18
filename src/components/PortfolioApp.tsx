@@ -426,7 +426,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
       <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--canvas)_88%,transparent)] backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] w-full max-w-[1480px] items-center justify-between px-5 sm:px-8 lg:px-12">
           <a className="text-sm font-black tracking-[0.18em]" href="#top">
-            DANIEL SEO<span className="text-[var(--accent)]">.</span>
+            {localize(profile.name, language)}<span className="text-[var(--accent)]">.</span>
           </a>
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
@@ -813,7 +813,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
       <footer className="border-t border-[var(--line)] px-5 py-8 sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-[1384px] flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-black tracking-[0.14em]">DANIEL SEO<span className="text-[var(--accent)]">.</span></p>
+            <p className="text-sm font-black tracking-[0.14em]">{localize(profile.name, language)}<span className="text-[var(--accent)]">.</span></p>
             <p className="mt-2 text-xs font-semibold text-[var(--muted)]">© {new Date().getFullYear()} Daniel Juyung Seo.</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
