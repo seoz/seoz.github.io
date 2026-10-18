@@ -150,3 +150,5 @@ In the admin timeline editor, each detailed line has **Move up** and **Move down
 Archive detailed-entry titles use the primary ink color, extra-bold weight, and responsive 16–18px type with 28px line height to distinguish them from descriptions and compact labels.
 
 Markdown links within detailed-entry titles open in a new tab with `noopener noreferrer`, keeping the portfolio open. Titles continue to use `react-markdown` without raw HTML support.
+
+The localized header name uses bold 14px type on mobile and 20px on desktop, giving the personal identity more prominence within the existing compact header.

@@ -425,7 +425,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
     <main className="min-h-screen overflow-x-clip bg-[var(--canvas)] text-[var(--ink)]">
       <header className="site-header sticky top-0 z-50 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--canvas)_88%,transparent)] backdrop-blur-xl">
         <div className="mx-auto flex h-16 w-full max-w-[1480px] items-center justify-between gap-2 px-3 sm:px-5 md:h-[72px] md:px-8 lg:px-12">
-          <a className="max-w-[22%] shrink-0 truncate text-[11px] font-black tracking-[0.04em] md:max-w-none md:text-sm md:tracking-[0.18em]" href="#top">
+          <a className="max-w-[22%] shrink-0 truncate text-sm font-black tracking-[0.04em] md:max-w-none md:text-xl md:tracking-[0.12em]" href="#top">
             {localize(profile.name, language)}<span className="text-[var(--accent)]">.</span>
           </a>
 
