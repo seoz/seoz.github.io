@@ -51,6 +51,8 @@ export type TimelineLink = {
 };
 
 export type TimelineHighlight = {
+  tags?: string[];
+  images?: string[];
   id: string;
   title: LocalizedText;
   description: LocalizedText;
@@ -68,6 +70,7 @@ export type TimelineItem = {
   description: LocalizedText;
   links: TimelineLink[];
   highlights?: TimelineHighlight[];
+  entryIds?: string[];
   tags: string[];
   section: string;
   imageUrl: string;

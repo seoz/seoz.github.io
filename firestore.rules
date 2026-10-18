@@ -97,10 +97,43 @@ service cloud.firestore {
         && data.updatedAt is string;
     }
 
+    function validEntryImage(url) {
+      return url is string && url.size() <= 2048
+        && (url == '' || url.matches('https?://[^\\s]+') || url.matches('/[a-zA-Z0-9_][a-zA-Z0-9_./-]*'));
+    }
+
+    function validEntryLink(link) {
+      return link is map && link.keys().hasOnly(['id', 'label', 'url'])
+        && link.id is string && link.id.size() <= 160
+        && validLocalized(link.label) && validPressUrl(link.url);
+    }
+
+    function validEntry(entry) {
+      return entry is map
+        && entry.keys().hasOnly(['id', 'title', 'description', 'imageUrl', 'images', 'tags', 'links'])
+        && entry.id is string && entry.id.matches('[a-zA-Z0-9_-]{1,160}')
+        && validPressText(entry.title) && validLocalized(entry.description)
+        && validEntryImage(entry.imageUrl)
+        && (!('tags' in entry) || (entry.tags is list && entry.tags.size() <= 12 && !entry.tags.hasAny([''])
+          && entry.tags.join('').matches('[a-zA-Z0-9_-]*')
+          && entry.tags.join(',').matches('([a-zA-Z0-9_-]{1,80}(,[a-zA-Z0-9_-]{1,80})*)?')))
+        && (!('images' in entry) || (entry.images is list && entry.images.size() <= 6
+          && (entry.images.size() <= 0 || (entry.images[0] != '' && validEntryImage(entry.images[0])))
+          && (entry.images.size() <= 1 || (entry.images[1] != '' && validEntryImage(entry.images[1])))
+          && (entry.images.size() <= 2 || (entry.images[2] != '' && validEntryImage(entry.images[2])))
+          && (entry.images.size() <= 3 || (entry.images[3] != '' && validEntryImage(entry.images[3])))
+          && (entry.images.size() <= 4 || (entry.images[4] != '' && validEntryImage(entry.images[4])))
+          && (entry.images.size() <= 5 || (entry.images[5] != '' && validEntryImage(entry.images[5])))))
+        && entry.links is list && entry.links.size() <= 3
+        && (entry.links.size() <= 0 || validEntryLink(entry.links[0]))
+        && (entry.links.size() <= 1 || validEntryLink(entry.links[1]))
+        && (entry.links.size() <= 2 || validEntryLink(entry.links[2]));
+    }
+
     function validTimeline(data, id) {
       return data.keys().hasOnly([
           'id', 'title', 'role', 'organization', 'period', 'location',
-          'description', 'links', 'highlights', 'tags', 'section', 'imageUrl', 'featured',
+          'description', 'links', 'highlights', 'entryIds', 'tags', 'section', 'imageUrl', 'featured',
           'order', 'updatedAt'
         ])
         && data.id == id
@@ -115,6 +148,8 @@ service cloud.firestore {
         && data.links.size() <= 12
         && (!('highlights' in data)
           || (data.highlights is list && data.highlights.size() <= 40))
+        && (!('entryIds' in data) || (data.entryIds is list && data.entryIds.size() <= 40
+          && data.entryIds.join('').size() <= 12800 && data.entryIds.join('').matches('[a-zA-Z0-9_-]*') && data.highlights.size() == 0))
         && data.tags is list
         && data.tags.size() <= 12
         && data.section is string
@@ -165,6 +200,18 @@ service cloud.firestore {
       allow read: if true;
       allow create, update: if profileId == 'main' && isAdmin() && validProfile(request.resource.data);
       allow delete: if false;
+    }
+
+    match /talkEntries/{entryId} {
+      allow read: if true;
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasOnly(['id', 'yearId', 'entry'])
+        && request.resource.data.id == entryId
+        && request.resource.data.yearId is string
+        && request.resource.data.yearId.matches('[a-zA-Z0-9_-]{1,160}')
+        && entryId == request.resource.data.yearId + '--' + request.resource.data.entry.id
+        && validEntry(request.resource.data.entry);
+      allow delete: if isAdmin();
     }
 
     match /timeline/{itemId} {
