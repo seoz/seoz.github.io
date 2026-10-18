@@ -3,7 +3,7 @@ import { seedContent } from "../src/data/seed";
 import { getTalkMetrics } from "../src/lib/talkMetrics";
 import type { TimelineItem } from "../src/types/content";
 
-const record: TimelineItem = { ...seedContent.timeline.find((item) => item.section === "talks")!, highlights: [], description: { en: "", ko: "" } };
+const record: TimelineItem = { ...seedContent.timeline.find((item) => item.section === "talks")!, highlights: undefined, description: { en: "", ko: "" } };
 const highlight = (en: string, ko = "") => ({ id: en || ko, title: { en, ko }, description: { en: "", ko: "" }, imageUrl: "", links: [] });
 assert.deepEqual(getTalkMetrics([]), { engagements: 0, activeYears: 0, talksLecturesPresentations: 0, interviewsMedia: 0, panelsRoundtables: 0, mentoringSessions: 0 });
 const items = [{ ...record, highlights: [highlight("A technical lecture"), highlight("Video interview"), highlight("Panelist and speaker"), highlight("Career mentoring")] }];

@@ -1,5 +1,6 @@
 "use client";
 
+import { resolveTalkEntries, type SavedTalkEntry } from "@/src/lib/talkEntries";
 import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot, orderBy, query } from "firebase/firestore";
 import { resolvePressContent } from "@/src/lib/press";
@@ -23,13 +24,16 @@ export function usePortfolioContent(): {
     let press = seedContent.press;
     let profile = seedContent.profile;
     let timeline = seedContent.timeline;
+    let entries: SavedTalkEntry[] = [];
+    let entriesReady = false;
     let sections = seedContent.sections;
     let labels = seedContent.labels;
     let hasReceivedData = false;
 
     const publish = () => {
+      if (!entriesReady && timeline.some((item) => item.entryIds !== undefined)) return;
       hasReceivedData = true;
-      setContent({ profile, press, timeline, sections, labels });
+      setContent({ profile, press, timeline: timeline.map((item) => resolveTalkEntries(item, entries)), sections, labels });
       setSource("firebase");
       setLoading(false);
     };
@@ -43,6 +47,11 @@ export function usePortfolioContent(): {
     };
 
     const unsubscribers = [
+      onSnapshot(collection(db, "talkEntries"), (snapshot) => {
+        entriesReady = true;
+        entries = snapshot.docs.map((item) => item.data() as SavedTalkEntry);
+        publish();
+      }, handleError),
       onSnapshot(
         collection(db, "press"),
         (snapshot) => {

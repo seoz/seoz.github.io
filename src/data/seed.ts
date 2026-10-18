@@ -1,3 +1,4 @@
+import { normalizeTalkItem } from "../lib/talkEntries";
 import { seedPress } from "@/src/data/press";
 import { profileArchiveTimeline } from "@/src/data/profileArchive";
 import type { PortfolioContent, PortfolioLabel, PortfolioSection, Profile } from "@/src/types/content";
@@ -53,7 +54,7 @@ export const seedSections: PortfolioSection[] = [
   { id: "talks", title: { en: "Presentations, lectures & interviews", ko: "발표·강연·인터뷰" }, eyebrow: { en: "Sharing what works", ko: "경험을 나누는 일" }, order: 6, visible: true, updatedAt: UPDATED_AT },
 ];
 
-export const seedTimeline = profileArchiveTimeline;
+export const seedTimeline = profileArchiveTimeline.map(normalizeTalkItem);
 
 export const seedContent: PortfolioContent = {
   press: seedPress,

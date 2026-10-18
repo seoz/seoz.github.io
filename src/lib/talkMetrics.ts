@@ -24,7 +24,7 @@ export function getTalkMetrics(timeline: TimelineItem[]) {
     const year = item.period.match(/\b(?:19|20)\d{2}\b/)?.[0];
     if (year) years.add(year);
     // Highlights replace the Markdown description in the archive; never count both.
-    const entries = item.highlights?.length ? item.highlights.map((highlight) => highlight.title) : descriptionEntries(item);
+    const entries = item.highlights !== undefined ? item.highlights.map((highlight) => highlight.title) : descriptionEntries(item);
     for (const entry of entries) {
       if (!entry.en.trim() && !entry.ko.trim()) continue;
       metrics[primaryFormat(entry)] += 1;
