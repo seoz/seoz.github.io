@@ -423,20 +423,20 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
 
   return (
     <main className="min-h-screen overflow-x-clip bg-[var(--canvas)] text-[var(--ink)]">
-      <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--canvas)_88%,transparent)] backdrop-blur-xl">
-        <div className="mx-auto flex h-[72px] w-full max-w-[1480px] items-center justify-between px-5 sm:px-8 lg:px-12">
-          <a className="text-sm font-black tracking-[0.18em]" href="#top">
+      <header className="site-header sticky top-0 z-50 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--canvas)_88%,transparent)] backdrop-blur-xl">
+        <div className="mx-auto flex h-16 w-full max-w-[1480px] items-center justify-between gap-2 px-3 sm:px-5 md:h-[72px] md:px-8 lg:px-12">
+          <a className="max-w-[22%] shrink-0 truncate text-[11px] font-black tracking-[0.04em] md:max-w-none md:text-sm md:tracking-[0.18em]" href="#top">
             {localize(profile.name, language)}<span className="text-[var(--accent)]">.</span>
           </a>
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+          <nav className="flex min-w-0 flex-1 items-center justify-start gap-0 overflow-x-auto whitespace-nowrap md:flex-none md:justify-center md:gap-1" aria-label="Primary navigation">
             <a className="nav-link" href="#press">{copy.navPress}</a>
             <a className="nav-link" href="#work">{copy.navWork}</a>
             <a className="nav-link" href="#story">{copy.navStory}</a>
             <a className="nav-link" href="#connect">{copy.navConnect}</a>
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 md:gap-2">
             <button
               className="icon-button"
               type="button"
@@ -449,7 +449,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
               {(["en", "ko"] as const).map((option) => (
                 <button
                   key={option}
-                  className={`rounded-full px-3 py-1.5 text-xs font-black transition ${language === option ? "bg-[var(--ink)] text-[var(--canvas)]" : "text-[var(--muted)] hover:text-[var(--ink)]"}`}
+                  className={`rounded-full px-1.5 py-1.5 text-[10px] font-black transition md:px-3 md:text-xs ${language === option ? "bg-[var(--ink)] text-[var(--canvas)]" : "text-[var(--muted)] hover:text-[var(--ink)]"}`}
                   type="button"
                   onClick={() => changeLanguage(option)}
                   aria-pressed={language === option}
@@ -461,11 +461,6 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
           </div>
         </div>
 
-        <nav className="flex flex-wrap justify-center gap-1 border-t border-[var(--line)] px-5 py-2 md:hidden" aria-label="Mobile navigation">
-          {[["#press", copy.navPress], ["#work", copy.navWork], ["#story", copy.navStory], ["#connect", copy.navConnect]].map(([href, label]) => (
-            <a key={href} className="nav-link" href={href}>{label}</a>
-          ))}
-        </nav>
       </header>
 
       <section id="top" className="mx-auto grid w-full max-w-[1480px] gap-8 px-5 pb-8 pt-10 sm:px-8 lg:grid-cols-[minmax(0,1.45fr)_minmax(340px,.55fr)] lg:gap-y-6 lg:px-12 lg:pb-12 lg:pt-12">

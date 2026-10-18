@@ -98,7 +98,7 @@ The public view is a direct toggle from the CMS. Firestore snapshots make saved 
 - Images use lazy loading outside the hero and have explicit fallbacks.
 - Controls have visible focus states, accessible labels, adequate touch targets, and reduced-motion behavior.
 - The primary navigation stays sticky and is intentionally kept outside any vertical overflow container so it remains accessible throughout long archive pages.
-- Layouts are fluid from small mobile screens to wide desktop canvases. The hero headline uses a responsive clamp(3.15rem, 7.5vw, 7.8rem) size, -0.025em letter spacing and 0.92 line height to keep characters and lines legible. Header navigation follows page order; mobile links use an always-visible second row instead of a menu toggle, and language controls remain visible at all widths.
+- Layouts are fluid from small mobile screens to wide desktop canvases. The hero headline uses a responsive clamp(3.15rem, 7.5vw, 7.8rem) size, -0.025em letter spacing and 0.92 line height to keep characters and lines legible. Header navigation follows page order; mobile links share the compact top header row, and language controls remain visible at all widths.
 - The theme uses color variables and preserves contrast in both modes.
 
 ## 10. Deployment and operations
@@ -142,3 +142,5 @@ On mobile and tablet (below the `lg` breakpoint), the hero portrait appears befo
 Header and footer name labels use **Admin → Profile → Name**, selecting the English or Korean field for the active language. Live profile updates and the bundled profile fallback use the same localization path; no schema or security rules change is needed.
 
 On mobile and tablet, the location/leader line sits above the portrait and the current-role panel occupies its own row above the photo without covering it. Desktop keeps the location above the left introduction and the role overlay at the bottom of the right portrait.
+
+The mobile header is a single 64px row containing the localized name, navigation, theme toggle, and language controls. Navigation can scroll horizontally on narrow screens without adding a second row; desktop retains the 72px header.

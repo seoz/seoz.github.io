@@ -515,3 +515,16 @@ select:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+@media (max-width: 767px) {
+  .site-header .nav-link {
+    flex-shrink: 0;
+    padding: 0.65rem 0.3rem;
+    font-size: 0.6875rem;
+  }
+
+  .site-header .icon-button {
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+}
