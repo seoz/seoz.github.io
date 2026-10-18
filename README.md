@@ -163,3 +163,5 @@ The mobile header is a single 64px row containing the localized name, navigation
 In the admin timeline editor, each detailed line has **Move up** and **Move down** buttons, including keyboard access and disabled boundary controls. Reordering moves the complete bilingual entry with its labels, photos, and links; **Save item** publishes the chosen order through the existing ordered highlights/entry IDs. The photo picker uses an **Upload photo** button next to **Add photo URL**, disabled during uploads or at the six-photo limit. Upload results follow the entry identity if a line is removed or reordered. These controls reuse the current schema and security rules.
 
 Archive detailed-entry titles use the primary ink color, extra-bold weight, and responsive 16–18px type with 28px line height to distinguish them from descriptions and compact labels.
+
+Markdown links within detailed-entry titles open in a new tab with `noopener noreferrer`, keeping the portfolio open. Titles continue to use `react-markdown` without raw HTML support.
