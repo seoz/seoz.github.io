@@ -319,6 +319,8 @@ export function AdminDashboard() {
     if (!file) return;
     if (!file.type.startsWith("image/")) return setNotice("Choose an image file.");
     if (file.size >= 5 * 1024 * 1024) return setNotice("Images must be smaller than 5 MB.");
+    const highlightId = target === "highlight" && highlightIndex !== undefined ? itemDraft?.highlights?.[highlightIndex]?.id : undefined;
+    const timelineId = itemDraft?.id;
     setSaving(true);
     try {
       const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
@@ -329,12 +331,13 @@ export function AdminDashboard() {
       else if (target === "timeline") setItemDraft((draft) => draft ? ({ ...draft, imageUrl: url }) : draft);
       else if (target === "press" && highlightIndex !== undefined) setPressDraft((press) => ({ ...press, cards: press.cards.map((card, index) => index === highlightIndex ? { ...card, image: url } : card) }));
       else setItemDraft((draft) => {
-        if (!draft || highlightIndex === undefined) return draft;
+        if (!draft || draft.id !== timelineId || !highlightId) return draft;
         const highlights = [...(draft.highlights ?? [])];
-        const highlight = highlights[highlightIndex];
+        const entryIndex = highlights.findIndex((entry) => entry.id === highlightId);
+        const highlight = highlights[entryIndex];
         if (!highlight) return draft;
         if (entryImages(highlight).length >= 6) return draft;
-        highlights[highlightIndex] = { ...highlight, images: [...entryImages(highlight), url] };
+        highlights[entryIndex] = { ...highlight, images: [...entryImages(highlight), url] };
         return { ...draft, highlights };
       });
       setNotice("Image uploaded. Save the record to publish it.");

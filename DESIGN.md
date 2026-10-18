@@ -144,3 +144,5 @@ Header and footer name labels use **Admin → Profile → Name**, selecting the 
 On mobile and tablet, the location/leader line sits above the portrait and the current-role panel occupies its own row above the photo without covering it. Desktop keeps the location above the left introduction and the role overlay at the bottom of the right portrait.
 
 The mobile header is a single 64px row containing the localized name, navigation, theme toggle, and language controls. Navigation can scroll horizontally on narrow screens without adding a second row; desktop retains the 72px header.
+
+Upload results follow the entry identity if a line is removed or reordered. These controls reuse the current schema and security rules.
