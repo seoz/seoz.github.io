@@ -201,7 +201,7 @@ function TimelineCard({
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="min-w-0">
-                      <div className="prose-copy text-sm font-semibold leading-6 text-[var(--muted)] [&_p]:inline">
+                      <div className="prose-copy text-base font-extrabold leading-7 text-[var(--ink)] sm:text-lg [&_p]:inline">
                         <ReactMarkdown>{highlightTitle}</ReactMarkdown>
                         {(highlight.tags ?? []).map((tag) => (
                           <span key={tag} className="ml-2 inline-flex h-6 items-center whitespace-nowrap rounded-full border border-[var(--line)] px-2 align-middle text-[10px] font-bold leading-none text-[var(--muted)]">
