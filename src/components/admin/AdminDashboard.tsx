@@ -52,6 +52,8 @@ import type {
   TimelineLink,
 } from "@/src/types/content";
 
+import { seedProfile } from "@/src/data/seed";
+import { isValidFocus } from "@/src/lib/focus";
 import { isValidPress } from "@/src/lib/press";
 
 const ADMIN_EMAIL = "seojuyung@gmail.com";
@@ -234,6 +236,7 @@ export function AdminDashboard() {
   const [notice, setNotice] = useState("");
   const [saving, setSaving] = useState(false);
   const [profileDraft, setProfileDraft] = useState<Profile>(content.profile);
+  const focusDraft = profileDraft.focus ?? seedProfile.focus!;
   const [pressDraft, setPressDraft] = useState(content.press);
   const updatePressCard = (index: number, changes: Partial<PressCard>) => setPressDraft({ ...pressDraft, cards: pressDraft.cards.map((card, cardIndex) => cardIndex === index ? { ...card, ...changes } : card) });
   const [itemDraft, setItemDraft] = useState<TimelineItem | null>(null);
@@ -419,12 +422,24 @@ export function AdminDashboard() {
 
           {activeTab === "profile" && (
             <div className="mx-auto max-w-5xl">
-              <div className="admin-page-heading"><div><p className="section-eyebrow">Identity</p><h1>Profile</h1></div><AdminButton disabled={saving} onClick={() => runMutation(() => setDoc(doc(db, "profile", "main"), { ...profileDraft, id: "main", updatedAt: new Date().toISOString() }), "Profile saved.")}><Save size={15} /> Save profile</AdminButton></div>
+              <div className="admin-page-heading"><div><p className="section-eyebrow">Identity</p><h1>Profile</h1></div><AdminButton disabled={saving} onClick={() => { if (!isValidFocus(focusDraft)) return setNotice("Focus needs English and Korean text, up to 120 characters per field and up to 6 items."); runMutation(() => setDoc(doc(db, "profile", "main"), { ...profileDraft, id: "main", updatedAt: new Date().toISOString() }), "Profile saved."); }}><Save size={15} /> Save profile</AdminButton></div>
               <div className="mt-8 space-y-6 border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-7">
                 <LocalizedFields label="Name" value={profileDraft.name} onChange={(name) => setProfileDraft({ ...profileDraft, name })} />
                 <LocalizedFields label="Title" value={profileDraft.title} onChange={(title) => setProfileDraft({ ...profileDraft, title })} />
                 <LocalizedFields label="Headline" value={profileDraft.headline} onChange={(headline) => setProfileDraft({ ...profileDraft, headline })} />
                 <LocalizedFields label="Summary" value={profileDraft.summary} onChange={(summary) => setProfileDraft({ ...profileDraft, summary })} multiline />
+                <fieldset className="space-y-4 border border-[var(--line)] p-4">
+                  <legend className="px-2 text-sm font-black">Current focus</legend>
+                  <LocalizedFields label="Focus label" value={focusDraft.label} onChange={(label) => setProfileDraft({ ...profileDraft, focus: { ...focusDraft, label } })} />
+                  {focusDraft.items.map((item, index) => (
+                    <div key={index} className="space-y-2">
+                      <LocalizedFields label={`Focus item ${index + 1}`} value={item} onChange={(value) => setProfileDraft({ ...profileDraft, focus: { ...focusDraft, items: focusDraft.items.map((existing, itemIndex) => itemIndex === index ? value : existing) } })} />
+                      <AdminButton variant="danger" onClick={() => setProfileDraft({ ...profileDraft, focus: { ...focusDraft, items: focusDraft.items.filter((_, itemIndex) => itemIndex !== index) } })}><Trash2 size={14} /> Remove focus item {index + 1}</AdminButton>
+                    </div>
+                  ))}
+                  <AdminButton variant="secondary" disabled={focusDraft.items.length >= 6} onClick={() => setProfileDraft({ ...profileDraft, focus: { ...focusDraft, items: [...focusDraft.items, emptyLocalized()] } })}><Plus size={14} /> Add focus item</AdminButton>
+                  <p className="text-xs text-[var(--muted)]">Save profile to publish. Remove every item to hide the focus strip.</p>
+                </fieldset>
                 <LocalizedFields label="Location" value={profileDraft.location} onChange={(location) => setProfileDraft({ ...profileDraft, location })} />
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label="Contact email"><input className="admin-input" type="email" value={profileDraft.contactEmail} onChange={(event) => setProfileDraft({ ...profileDraft, contactEmail: event.target.value })} /></Field>

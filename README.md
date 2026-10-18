@@ -23,7 +23,7 @@ If Firebase is temporarily unavailable, slow to connect, or has not been configu
 1. Open `/admin`.
 2. Choose **Continue with Google**.
 3. Sign in as `seojuyung@gmail.com`.
-4. Use **Press** to edit the section heading, description, source/year labels, card titles, image descriptions, destination links, images (URL or upload), and card order. Add or remove cards, then select **Save press**. Both English and Korean text are required. Use the other tabs to update the profile, add and reorder timeline items, manage sections, upload images, and edit filter labels. Timeline records can optionally replace one long description with compact detailed lines; every line supports bilingual copy, a short note, one image, and multiple links.
+4. In **Profile → Current focus**, edit the bilingual label, add or remove focus items, then select **Save profile**. Use **Press** to edit the section heading, description, source/year labels, card titles, image descriptions, destination links, images (URL or upload), and card order. Add or remove cards, then select **Save press**. Both English and Korean text are required. Use the other tabs to update the profile, add and reorder timeline items, manage sections, upload images, and edit filter labels. Timeline records can optionally replace one long description with compact detailed lines; every line supports bilingual copy, a short note, one image, and multiple links.
 5. Choose **Public view** to inspect published changes in a new tab.
 
 All other Google accounts are signed out and denied. Firebase rules independently enforce the same allowlist for every database and storage mutation.

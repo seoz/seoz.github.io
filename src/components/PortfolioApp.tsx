@@ -22,6 +22,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { usePortfolioContent } from "@/src/hooks/usePortfolioContent";
+import { seedProfile } from "@/src/data/seed";
 import { getTalkMetrics } from "@/src/lib/talkMetrics";
 import { DEFAULT_LANGUAGE, localize, normalizeLanguage, uiCopy } from "@/src/lib/i18n";
 import type { Language, PortfolioContent, TimelineItem } from "@/src/types/content";
@@ -392,6 +393,7 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
     return groups;
   }, [content.sections, filteredItems, visibleSections]);
 
+  const focus = profile.focus ?? seedProfile.focus!;
   const press = content.press;
   const headline = localize(profile.headline, language);
   const headlineWords = headline.split(" ");
@@ -466,22 +468,22 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
             </p>
           </div>
 
-          <div className="mt-auto pt-8">
+          {focus.items.length > 0 && <div className="mt-auto pt-8">
             <a className="secondary-link" href={`mailto:${profile.contactEmail}`}>
               {copy.contact}
             </a>
             <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-[var(--line)] py-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">{copy.focusLabel}</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--accent)]">{localize(focus.label, language)}</p>
               <ul className="flex flex-wrap gap-x-5 gap-y-2">
-                {copy.focusAreas.map((area) => (
-                  <li key={area} className="flex items-center gap-2 text-xs font-extrabold text-[var(--muted)] sm:text-sm">
+                {focus.items.map((area, index) => (
+                  <li key={index} className="flex items-center gap-2 text-xs font-extrabold text-[var(--muted)] sm:text-sm">
                     <span className="h-1.5 w-1.5 rounded-full bg-[var(--ink)]" aria-hidden="true" />
-                    {area}
+                    {localize(area, language)}
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
+          </div>}
         </div>
 
         <aside className="relative min-h-[430px] p-2 sm:min-h-[520px] sm:p-3">

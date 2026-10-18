@@ -26,7 +26,7 @@ Localized fields are maps with exactly `en` and `ko` string keys. This avoids du
 
 ### `profile/main`
 
-Identity and global presentation data: localized name, title, headline, summary, location, contact email, avatar URL, social links, optional `focus` (`label` and an ordered `items` array), and an ISO update timestamp. Focus supports up to six entries; label and item fields require both languages with 1–120 characters each. Missing focus supports a seed fallback and empty saved lists can hide the strip. Client and Firestore rules validate the same bounds without broadening admin access. Storage rules remain unchanged.
+Identity and global presentation data: localized name, title, headline, summary, location, contact email, avatar URL, social links, optional `focus` (`label` and an ordered `items` array), and an ISO update timestamp. Focus supports up to six entries; label and item fields require both languages with 1–120 characters each. Admin Profile edits the label and list; missing focus falls back to seed content, while an empty list hides the strip. Client and Firestore rules validate the same bounds without broadening admin access. Storage rules remain unchanged.
 
 ### `press/main` and `press/{cardId}`
 
