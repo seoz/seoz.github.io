@@ -1,7 +1,7 @@
 "use client";
 
 import { entryImages, normalizeTalkItem, validEntry } from "@/src/lib/talkEntries";
-import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import Link from "next/link";
 import {
   ArrowDown,
@@ -136,6 +136,8 @@ function TimelineHighlightEditor({
   onUpload: (event: ChangeEvent<HTMLInputElement>) => void;
 }) {
   const links = highlight.links ?? [];
+  const uploadInput = useRef<HTMLInputElement>(null);
+  const photosFull = entryImages(highlight).length >= 6;
 
   return (
     <article className="space-y-4 border border-[var(--line)] bg-[var(--canvas)] p-4 sm:p-5">
@@ -164,8 +166,13 @@ function TimelineHighlightEditor({
           <input className="admin-input" aria-label={`Photo ${photoIndex + 1} URL`} value={url} onChange={(event) => onChange({ ...highlight, images: entryImages(highlight).map((image, i) => i === photoIndex ? event.target.value : image) })} />
           <button type="button" className="row-action danger" aria-label={`Remove photo ${photoIndex + 1}`} onClick={() => onChange({ ...highlight, imageUrl: "", images: entryImages(highlight).filter((_, i) => i !== photoIndex) })}><Trash2 size={15} /></button>
         </div>)}
-        <button type="button" className="filter-button" disabled={entryImages(highlight).length >= 6} onClick={() => onChange({ ...highlight, images: [...entryImages(highlight), ""] })}>Add photo URL</button>
-        <input aria-label="Upload item photo" type="file" accept="image/*" disabled={entryImages(highlight).length >= 6} onChange={onUpload} />
+        <div className="flex flex-wrap gap-2">
+          <button type="button" className="filter-button" disabled={photosFull} onClick={() => onChange({ ...highlight, images: [...entryImages(highlight), ""] })}>Add photo URL</button>
+          <button type="button" className="filter-button" disabled={busy || photosFull} onClick={() => uploadInput.current?.click()}>
+            <ImagePlus size={16} aria-hidden="true" /> Upload photo
+          </button>
+          <input ref={uploadInput} className="hidden" aria-label="Upload item photo" type="file" accept="image/*" disabled={busy || photosFull} onChange={onUpload} />
+        </div>
       </fieldset>
       <fieldset>
         <legend className="text-xs font-black uppercase tracking-[0.1em] text-[var(--muted)]">Line links</legend>
