@@ -10,6 +10,7 @@ A bilingual personal portfolio for Daniel Juyung Seo, with an English/Korean pub
 - See career statistics that calculate Google tenure from the March 2015 start date, with six years at Samsung and more than six years at startups grouped as supporting experience.
 - Learn about Daniel's donation-based mentoring and open his direct Donation Mentoring profile.
 - Browse the compact career archive before the mentoring and contact sections, which includes a section navigator, distinct chapter-style groups, color-coded period markers, prominent employer badges in the Career chapter, live item counts, label filters, search, and on-demand details. The talks chapter summarizes its current documented engagements by format and opens its yearly records by default. The statistics strip computes talks/lectures/presentations, interviews/media, and panels/roundtables from the same live timeline records.
+- View activity photos in a page overlay. Multi-photo entries include previous/next buttons and arrow-key navigation; close with Escape, the close button, or the backdrop.
 - Switch between light and dark themes.
 - Follow verified LinkedIn and GitHub links or start an email conversation.
 - Use the site comfortably on phones, tablets, laptops, and wide screens.

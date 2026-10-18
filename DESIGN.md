@@ -152,3 +152,5 @@ Archive detailed-entry titles use the primary ink color, extra-bold weight, and 
 Markdown links within detailed-entry titles open in a new tab with `noopener noreferrer`, keeping the portfolio open. Titles continue to use `react-markdown` without raw HTML support.
 
 The localized header name uses bold 14px type on mobile and 20px on desktop, giving the personal identity more prominence within the existing compact header.
+
+Activity entry photos open a native modal dialog through `PhotoGallery`, with contained full-size images and a localized position counter. Navigation wraps within the selected entry and appears only for multiple photos. The dialog traps focus, makes the page inert, locks background scrolling, and restores focus to the thumbnail on close. Escape, the close button, and backdrop clicks dismiss it; left/right arrow keys navigate. Mobile places 44px navigation controls beneath the image. English/Korean labels, visible focus, and a motion-free layout preserve accessibility. This presentation change reuses existing photo fields and requires no schema or security-rule changes.
