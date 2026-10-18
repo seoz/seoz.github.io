@@ -320,7 +320,16 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
   const copy = uiCopy[language];
   const profile = content.profile;
   const visibleSections = useMemo(
-    () => [...content.sections].filter((section) => section.visible).sort((a, b) => a.order - b.order),
+    () => {
+      const sections = content.sections.filter((section) => section.visible).sort((a, b) => a.order - b.order);
+      const careerIndex = sections.findIndex((section) => section.id === "career");
+      const talksIndex = sections.findIndex((section) => section.id === "talks");
+      if (careerIndex !== -1 && talksIndex !== -1) {
+        const [talks] = sections.splice(talksIndex, 1);
+        sections.splice(sections.findIndex((section) => section.id === "career") + 1, 0, talks);
+      }
+      return sections;
+    },
     [content.sections],
   );
   const labels = useMemo(() => [...content.labels].sort((a, b) => a.order - b.order), [content.labels]);

@@ -123,6 +123,8 @@ Recommended operational checks:
 
 Single-year talks digests hide the repeated header block (feature/tag badges, title, and role/organization). Year badges, engagement lists, and accessible year-specific disclosure controls align on the same desktop grid row without an empty header or divider. On mobile, engagement details stack beneath the year and control. The underlying fields remain stored for CMS editing, search, and filtering. Other archive entries retain their existing header structure.
 
+The public archive and its section navigator place “Presentations, lectures & interviews” directly after “Career journey” in both languages, including when live section ordering differs. Other chapters retain their configured relative order.
+
 ### Editable yearly engagements
 
 In **Admin → Timeline**, edit a speaking year to create, edit, or remove its detailed entries, then **Save item**. Legacy bilingual Markdown bullets are converted to editable entries on read without reseeding; Markdown links remain intact. Each entry supports bilingual title/detail, up to 12 label IDs from **Labels**, up to 3 links, and up to six photos (HTTP(S), local path, or image upload). Removing all entries preserves an empty year without reviving its legacy description. Years remain the public grouping; label and search filters select individual entries and recalculate the chapter metrics. Label buttons display counts across the full archive. Existing single-image entries remain compatible.

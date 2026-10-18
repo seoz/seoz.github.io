@@ -46,12 +46,12 @@ export const seedLabels: PortfolioLabel[] = [
 
 export const seedSections: PortfolioSection[] = [
   { id: "career", title: { en: "Career journey", ko: "커리어 여정" }, eyebrow: { en: "Building at scale", ko: "규모 있는 기술을 만들다" }, order: 0, visible: true, updatedAt: UPDATED_AT },
-  { id: "mentoring", title: { en: "Mentoring & community", ko: "멘토링과 커뮤니티" }, eyebrow: { en: "Helping others grow", ko: "함께 성장하는 일" }, order: 1, visible: true, updatedAt: UPDATED_AT },
-  { id: "open-source", title: { en: "Open-source contribution", ko: "오픈소스 기여" }, eyebrow: { en: "Learning in public", ko: "함께 배우고 기여하다" }, order: 2, visible: true, updatedAt: UPDATED_AT },
-  { id: "publications", title: { en: "Research & publications", ko: "논문과 기고" }, eyebrow: { en: "Ideas in print", ko: "기록으로 남긴 생각" }, order: 3, visible: true, updatedAt: UPDATED_AT },
-  { id: "awards", title: { en: "Awards", ko: "수상" }, eyebrow: { en: "Recognition along the way", ko: "여정에서 받은 인정" }, order: 4, visible: true, updatedAt: UPDATED_AT },
-  { id: "education", title: { en: "Education", ko: "교육" }, eyebrow: { en: "A foundation in computing", ko: "컴퓨팅의 기초" }, order: 5, visible: true, updatedAt: UPDATED_AT },
-  { id: "talks", title: { en: "Presentations, lectures & interviews", ko: "발표·강연·인터뷰" }, eyebrow: { en: "Sharing what works", ko: "경험을 나누는 일" }, order: 6, visible: true, updatedAt: UPDATED_AT },
+  { id: "talks", title: { en: "Presentations, lectures & interviews", ko: "발표·강연·인터뷰" }, eyebrow: { en: "Sharing what works", ko: "경험을 나누는 일" }, order: 1, visible: true, updatedAt: UPDATED_AT },
+  { id: "mentoring", title: { en: "Mentoring & community", ko: "멘토링과 커뮤니티" }, eyebrow: { en: "Helping others grow", ko: "함께 성장하는 일" }, order: 2, visible: true, updatedAt: UPDATED_AT },
+  { id: "open-source", title: { en: "Open-source contribution", ko: "오픈소스 기여" }, eyebrow: { en: "Learning in public", ko: "함께 배우고 기여하다" }, order: 3, visible: true, updatedAt: UPDATED_AT },
+  { id: "publications", title: { en: "Research & publications", ko: "논문과 기고" }, eyebrow: { en: "Ideas in print", ko: "기록으로 남긴 생각" }, order: 4, visible: true, updatedAt: UPDATED_AT },
+  { id: "awards", title: { en: "Awards", ko: "수상" }, eyebrow: { en: "Recognition along the way", ko: "여정에서 받은 인정" }, order: 5, visible: true, updatedAt: UPDATED_AT },
+  { id: "education", title: { en: "Education", ko: "교육" }, eyebrow: { en: "A foundation in computing", ko: "컴퓨팅의 기초" }, order: 6, visible: true, updatedAt: UPDATED_AT },
 ];
 
 export const seedTimeline = profileArchiveTimeline.map(normalizeTalkItem);

@@ -138,6 +138,8 @@ The hero uses a slightly smaller responsive headline (3.15–7.8rem) and 0.92 li
 
 Yearly talks entries align the year, detailed engagements, and disclosure control on the same desktop row, stacking details below on mobile. They display the year, disclosure control, and detailed engagements without repeating feature/tag badges, the yearly title, or the generic role/organization summary. These fields stay available in the CMS and continue to support filtering and search. Other archive cards retain their headings.
 
+The public archive and its section navigator place “Presentations, lectures & interviews” directly after “Career journey” in both languages, including when live section ordering differs. Other chapters retain their configured relative order.
+
 ### Editable yearly engagements
 
 In **Admin → Timeline**, edit a speaking year to create, edit, or remove its detailed entries, then **Save item**. Legacy bilingual Markdown bullets are converted to editable entries on read without reseeding; Markdown links remain intact. Each entry supports bilingual title/detail, up to 12 label IDs from **Labels**, up to 3 links, and up to six photos (HTTP(S), local path, or image upload). Removing all entries preserves an empty year without reviving its legacy description. Years remain the public grouping; label and search filters select individual entries and recalculate the chapter metrics. Label buttons display counts across the full archive. Existing single-image entries remain compatible.
