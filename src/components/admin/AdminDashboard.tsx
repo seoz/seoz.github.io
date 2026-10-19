@@ -333,6 +333,18 @@ export function AdminDashboard() {
   const { db, auth, storage } = getFirebaseServices();
   const orderedTimeline = [...content.timeline].sort((a, b) => a.order - b.order);
   const orderedSections = [...content.sections].sort((a, b) => a.order - b.order);
+  const timelineGroups = [
+    ...orderedSections.map((section) => ({
+      id: section.id,
+      title: section.title,
+      items: orderedTimeline.filter((item) => item.section === section.id),
+    })),
+    {
+      id: "unassigned",
+      title: { en: "Other / unassigned", ko: "기타 / 미지정" },
+      items: orderedTimeline.filter((item) => !orderedSections.some((section) => section.id === item.section)),
+    },
+  ].filter((group) => group.items.length > 0);
   const orderedLabels = [...content.labels].sort((a, b) => a.order - b.order);
 
   const uploadImage = async (event: ChangeEvent<HTMLInputElement>, target: "profile" | "timeline" | "highlight" | "press", highlightIndex?: number) => {
@@ -370,11 +382,11 @@ export function AdminDashboard() {
     }
   };
 
-  const moveTimeline = (index: number, direction: -1 | 1) => {
+  const moveTimeline = (items: TimelineItem[], index: number, direction: -1 | 1) => {
     const targetIndex = index + direction;
-    if (targetIndex < 0 || targetIndex >= orderedTimeline.length) return;
-    const first = orderedTimeline[index];
-    const second = orderedTimeline[targetIndex];
+    if (targetIndex < 0 || targetIndex >= items.length) return;
+    const first = items[index];
+    const second = items[targetIndex];
     runMutation(async () => {
       const batch = writeBatch(db);
       batch.update(doc(db, "timeline", first.id), { order: second.order, updatedAt: new Date().toISOString() });
@@ -543,14 +555,24 @@ export function AdminDashboard() {
           {activeTab === "timeline" && (
             <div className="mx-auto max-w-6xl">
               <div className="admin-page-heading"><div><p className="section-eyebrow">Archive</p><h1>Timeline</h1></div><AdminButton onClick={() => setItemDraft(emptyTimeline(orderedTimeline.length))}><Plus size={15} /> Add item</AdminButton></div>
-              <div className="mt-8 divide-y divide-[var(--line)] border-y border-[var(--line)]">
-                {orderedTimeline.map((item, index) => (
+              <div className="mt-8 space-y-8">
+                {timelineGroups.map((group) => (
+                  <section key={group.id} aria-labelledby={`admin-timeline-group-${group.id}`} className="border border-[var(--line)]">
+                    <header className="flex flex-wrap items-center justify-between gap-3 bg-[var(--surface-soft)] px-5 py-4">
+                      <div><h2 id={`admin-timeline-group-${group.id}`} className="text-lg font-black">{group.title.en}</h2><p className="text-sm text-[var(--muted)]" lang="ko">{group.title.ko}</p></div>
+                      <span className="font-mono text-sm font-bold" aria-label="Item count">{group.items.length}</span>
+                    </header>
+                    <div className="divide-y divide-[var(--line)] px-5">
+                {group.items.map((item, index) => (
                   <article key={item.id} className="grid items-center gap-4 py-5 md:grid-cols-[44px_120px_minmax(0,1fr)_auto]">
                     <GripVertical className="hidden text-[var(--line-strong)] md:block" size={18} />
                     <p className="font-mono text-xs font-bold text-[var(--muted)]">{item.period}</p>
-                    <div className="min-w-0"><h2 className="truncate text-base font-black">{item.title.en}</h2><p className="mt-1 truncate text-xs font-bold text-[var(--muted)]">{item.organization.en} · {item.section}</p></div>
-                    <div className="flex items-center gap-1 md:justify-self-end"><button className="row-action" aria-label="Move up" disabled={index === 0} onClick={() => moveTimeline(index, -1)}><ArrowUp size={15} /></button><button className="row-action" aria-label="Move down" disabled={index === orderedTimeline.length - 1} onClick={() => moveTimeline(index, 1)}><ArrowDown size={15} /></button><button className="row-action" aria-label="Edit item" onClick={() => setItemDraft(normalizeTalkItem(item))}><Pencil size={15} /></button><button className="row-action danger" aria-label="Delete item" onClick={() => { if (window.confirm(`Delete “${item.title.en}”?`)) runMutation(async () => { const batch = writeBatch(db); batch.delete(doc(db, "timeline", item.id)); (item.entryIds ?? []).forEach((entryId) => batch.delete(doc(db, "talkEntries", entryId))); await batch.commit(); }, "Timeline item deleted."); }}><Trash2 size={15} /></button></div>
+                    <div className="min-w-0"><h3 className="truncate text-base font-black">{item.title.en}</h3><p className="mt-1 truncate text-xs font-bold text-[var(--muted)]">{item.organization.en} · {item.section}</p></div>
+                    <div className="flex items-center gap-1 md:justify-self-end"><button className="row-action" aria-label="Move up" disabled={index === 0} onClick={() => moveTimeline(group.items, index, -1)}><ArrowUp size={15} /></button><button className="row-action" aria-label="Move down" disabled={index === group.items.length - 1} onClick={() => moveTimeline(group.items, index, 1)}><ArrowDown size={15} /></button><button className="row-action" aria-label="Edit item" onClick={() => setItemDraft(normalizeTalkItem(item))}><Pencil size={15} /></button><button className="row-action danger" aria-label="Delete item" onClick={() => { if (window.confirm(`Delete “${item.title.en}”?`)) runMutation(async () => { const batch = writeBatch(db); batch.delete(doc(db, "timeline", item.id)); (item.entryIds ?? []).forEach((entryId) => batch.delete(doc(db, "talkEntries", entryId))); await batch.commit(); }, "Timeline item deleted."); }}><Trash2 size={15} /></button></div>
                   </article>
+                ))}
+                    </div>
+                  </section>
                 ))}
               </div>
             </div>
