@@ -1,6 +1,6 @@
 "use client";
 
-import { entryImages, normalizeTalkItem, validEntry } from "@/src/lib/talkEntries";
+import { entryImages, normalizeTalkItem, validEntry, validItemPhotos } from "@/src/lib/talkEntries";
 import { useEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import Link from "next/link";
 import {
@@ -349,7 +349,7 @@ export function AdminDashboard() {
       await uploadBytes(storageRef, file, { contentType: file.type });
       const url = await getDownloadURL(storageRef);
       if (target === "profile") setProfileDraft((draft) => ({ ...draft, avatarUrl: url }));
-      else if (target === "timeline") setItemDraft((draft) => draft ? ({ ...draft, imageUrl: url }) : draft);
+      else if (target === "timeline") setItemDraft((draft) => draft && draft.id === timelineId && entryImages(draft).length < 6 ? ({ ...draft, images: [...entryImages(draft), url] }) : draft);
       else if (target === "press" && highlightIndex !== undefined) setPressDraft((press) => ({ ...press, cards: press.cards.map((card, index) => index === highlightIndex ? { ...card, image: url } : card) }));
       else setItemDraft((draft) => {
         if (!draft || draft.id !== timelineId || !highlightId) return draft;
@@ -386,6 +386,7 @@ export function AdminDashboard() {
   const saveTimeline = () => {
     if (!itemDraft || !itemDraft.title.en.trim() || !itemDraft.title.ko.trim()) return setNotice("English and Korean titles are required.");
     if ((itemDraft.highlights ?? []).length > 40 || (itemDraft.highlights ?? []).some((highlight) => !validEntry(highlight))) return setNotice("Check each item: bilingual titles, up to 12 labels and 3 links, and up to 6 valid HTTP(S) or local photo URLs are required.");
+    if (!validItemPhotos(itemDraft)) return setNotice("Add up to 6 valid HTTP(S) or local item photo URLs.");
     const id = itemDraft.id || crypto.randomUUID();
     const next = { ...itemDraft, id, updatedAt: new Date().toISOString() };
     runMutation(async () => {
@@ -646,7 +647,16 @@ export function AdminDashboard() {
 
               <fieldset><legend className="mb-3 text-xs font-black uppercase tracking-[0.1em] text-[var(--muted)]">Labels</legend><div className="flex flex-wrap gap-2">{orderedLabels.map((label) => { const selected = itemDraft.tags.includes(label.id); return <button key={label.id} type="button" className={`filter-button ${selected ? "active" : ""}`} onClick={() => setItemDraft({ ...itemDraft, tags: selected ? itemDraft.tags.filter((tag) => tag !== label.id) : [...itemDraft.tags, label.id] })}><span className="h-2 w-2 rounded-full" style={{ backgroundColor: label.accent }} />{label.name.en}</button>; })}</div></fieldset>
               <label className="flex items-center gap-3 text-sm font-black"><input type="checkbox" checked={itemDraft.featured} onChange={(event) => setItemDraft({ ...itemDraft, featured: event.target.checked })} /> Feature this item</label>
-              <div className="grid gap-4 sm:grid-cols-[1fr_auto]"><Field label="Thumbnail URL"><input className="admin-input" value={itemDraft.imageUrl} onChange={(event) => setItemDraft({ ...itemDraft, imageUrl: event.target.value })} /></Field><Field label="Upload"><label className="upload-box min-h-[45px]"><ImagePlus size={18} /><span>Choose image</span><input className="sr-only" type="file" accept="image/*" onChange={(event) => uploadImage(event, "timeline")} /></label></Field></div>
+              <fieldset className="space-y-3"><legend className="font-bold">Item photos (up to 6)</legend>
+                {entryImages(itemDraft).map((url, index) => <div key={index} className="flex gap-2">
+                  <input className="admin-input" aria-label={`Item photo ${index + 1} URL`} value={url} onChange={(event) => setItemDraft({ ...itemDraft, images: entryImages(itemDraft).map((photo, i) => i === index ? event.target.value : photo) })} />
+                  <button type="button" className="row-action danger" aria-label={`Remove item photo ${index + 1}`} onClick={() => setItemDraft({ ...itemDraft, imageUrl: "", images: entryImages(itemDraft).filter((_, i) => i !== index) })}><Trash2 size={15} /></button>
+                </div>)}
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" className="filter-button" disabled={saving || entryImages(itemDraft).length >= 6} onClick={() => setItemDraft({ ...itemDraft, images: [...entryImages(itemDraft), ""] })}>Add photo URL</button>
+                  <label className="upload-box"><ImagePlus size={18} /><span>Upload photo</span><input className="sr-only" aria-label="Upload timeline item photo" type="file" accept="image/*" disabled={saving || entryImages(itemDraft).length >= 6} onChange={(event) => uploadImage(event, "timeline")} /></label>
+                </div>
+              </fieldset>
               <fieldset><div className="mb-3 flex items-center justify-between"><legend className="text-xs font-black uppercase tracking-[0.1em] text-[var(--muted)]">Links</legend><button type="button" className="text-xs font-black text-[var(--accent)]" onClick={() => setItemDraft({ ...itemDraft, links: [...itemDraft.links, { id: crypto.randomUUID(), label: emptyLocalized(), url: "" }] })}>+ Add link</button></div><div className="space-y-4">{itemDraft.links.map((link: TimelineLink, index) => <div key={link.id} className="grid gap-3 border border-[var(--line)] p-4 sm:grid-cols-[1fr_1fr_1.2fr_auto]"><input className="admin-input" aria-label="English link label" placeholder="English label" value={link.label.en} onChange={(event) => { const links = [...itemDraft.links]; links[index] = { ...link, label: { ...link.label, en: event.target.value } }; setItemDraft({ ...itemDraft, links }); }} /><input className="admin-input" aria-label="Korean link label" placeholder="한국어 라벨" value={link.label.ko} onChange={(event) => { const links = [...itemDraft.links]; links[index] = { ...link, label: { ...link.label, ko: event.target.value } }; setItemDraft({ ...itemDraft, links }); }} /><input className="admin-input" aria-label="Link URL" placeholder="https://…" value={link.url} onChange={(event) => { const links = [...itemDraft.links]; links[index] = { ...link, url: event.target.value }; setItemDraft({ ...itemDraft, links }); }} /><button type="button" className="row-action danger" aria-label="Remove link" onClick={() => setItemDraft({ ...itemDraft, links: itemDraft.links.filter((entry) => entry.id !== link.id) })}><Trash2 size={15} /></button></div>)}</div></fieldset>
             </div>
             <div className="admin-modal-footer"><AdminButton variant="secondary" onClick={() => setItemDraft(null)}>Cancel</AdminButton><AdminButton type="submit" disabled={saving}><Save size={15} /> Save item</AdminButton></div>

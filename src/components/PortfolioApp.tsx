@@ -170,9 +170,6 @@ function TimelineCard({
         </div>}
 
         <div className={`flex items-start justify-between gap-3 md:justify-end ${isTalkDigest ? "col-start-2 row-start-1 md:col-start-3" : ""}`}>
-          {item.imageUrl && (
-            <img className="h-14 w-20 object-cover" src={item.imageUrl} alt="" loading="lazy" />
-          )}
           <button
             className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[var(--line)] px-3 text-xs font-black text-[var(--muted)] transition hover:border-[var(--ink)] hover:text-[var(--ink)]"
             type="button"
@@ -186,6 +183,8 @@ function TimelineCard({
           </button>
         </div>
       </div>
+
+      {entryImages(item).length > 0 && <div className="col-span-full mt-4 md:ml-[158px]"><PhotoGallery images={entryImages(item)} title={localize(item.title, language)} language={language} /></div>}
 
       {expanded && (
         <div id={detailsId} className={isTalkDigest ? "col-span-2 row-start-2 mt-4 min-w-0 md:col-span-1 md:col-start-2 md:row-start-1 md:mt-0" : "mt-4 border-t border-dashed border-[var(--line)] pt-4 md:ml-[158px]"}>
