@@ -9,7 +9,7 @@ service firebase.storage {
         && request.auth.token.firebase.sign_in_provider == 'google.com';
     }
 
-    // Per-entry photo galleries and Press card images use the same admin-only image upload path as portraits and timeline images.
+    // Timeline item and per-entry photo galleries and Press card images use the same admin-only image upload path as portraits and timeline images.
     match /portfolio/{fileName} {
       allow read: if true;
       allow create, update: if isAdmin()

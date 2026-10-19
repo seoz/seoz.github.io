@@ -133,7 +133,7 @@ service cloud.firestore {
     function validTimeline(data, id) {
       return data.keys().hasOnly([
           'id', 'title', 'role', 'organization', 'period', 'location',
-          'description', 'links', 'highlights', 'entryIds', 'tags', 'section', 'imageUrl', 'featured',
+          'description', 'links', 'highlights', 'entryIds', 'tags', 'section', 'imageUrl', 'images', 'featured',
           'order', 'updatedAt'
         ])
         && data.id == id
@@ -156,6 +156,13 @@ service cloud.firestore {
         && data.section.size() <= 80
         && data.imageUrl is string
         && data.imageUrl.size() <= 2048
+        && (!('images' in data) || (data.images is list && data.images.size() <= 6
+          && (data.images.size() <= 0 || (data.images[0] != '' && validEntryImage(data.images[0])))
+          && (data.images.size() <= 1 || (data.images[1] != '' && validEntryImage(data.images[1])))
+          && (data.images.size() <= 2 || (data.images[2] != '' && validEntryImage(data.images[2])))
+          && (data.images.size() <= 3 || (data.images[3] != '' && validEntryImage(data.images[3])))
+          && (data.images.size() <= 4 || (data.images[4] != '' && validEntryImage(data.images[4])))
+          && (data.images.size() <= 5 || (data.images[5] != '' && validEntryImage(data.images[5])))))
         && data.featured is bool
         && data.order is int
         && data.order >= 0

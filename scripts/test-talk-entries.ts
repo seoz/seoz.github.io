@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { seedContent } from "../src/data/seed";
-import { filterTalkEntries, normalizeTalkItem, resolveTalkEntries, talkEntries, validEntry } from "../src/lib/talkEntries";
+import { entryImages, validItemPhotos, filterTalkEntries, normalizeTalkItem, resolveTalkEntries, talkEntries, validEntry } from "../src/lib/talkEntries";
 import { getTalkMetrics } from "../src/lib/talkMetrics";
 const year = seedContent.timeline.find((item) => item.section === "talks")!;
 const entry = { ...year.highlights![0], tags: ["talk"], images: ["/press/photo.jpg", "https://example.com/photo.jpg"] };
@@ -9,6 +9,12 @@ assert.equal(validEntry({ ...entry, images: ["javascript:alert(1)"] }), false);
 assert.equal(validEntry({ ...entry, images: Array(7).fill("/photo.jpg") }), false);
 assert.equal(validEntry({ ...entry, tags: ["bad,label"] }), false);
 assert.equal(validEntry({ ...entry, title: { en: "Title", ko: "" } }), false);
+assert.deepEqual(entryImages({ imageUrl: "/legacy.jpg" }), ["/legacy.jpg"]);
+assert.deepEqual(entryImages({ imageUrl: "/legacy.jpg", images: [] }), []);
+assert.ok(validItemPhotos({ imageUrl: "", images: Array(6).fill("/photo.jpg") }));
+assert.ok(seedContent.timeline.every(validItemPhotos));
+assert.equal(validItemPhotos({ imageUrl: "", images: ["javascript:alert(1)"] }), false);
+assert.equal(validItemPhotos({ imageUrl: "", images: Array(7).fill("/photo.jpg") }), false);
 const empty = { ...year, highlights: [] };
 assert.equal(talkEntries(empty).length, 0);
 assert.equal(getTalkMetrics([empty]).engagements, 0);
@@ -72,6 +78,12 @@ if (process.argv.includes("--emulator")) {
   const response = await write({ ...year, highlights: [], entryIds: [`${year.id}--${entry.id}`] }, admin);
   assert.ok(response.ok, await response.text());
   assert.equal((await write(empty, admin)).ok, true);
+  for (const [images, expected] of [[Array(6).fill("/photo.jpg"), true], [[], true], [["javascript:alert(1)"], false], [Array(7).fill("/photo.jpg"), false], [[""], false]] as Array<[string[], boolean]>) {
+    const result = await write({ ...empty, images }, admin);
+    assert.equal(result.ok, expected, `Timeline gallery: ${await result.text()}`);
+  }
+  assert.equal((await write({ ...empty, images: ["/photo.jpg"] }, token("other@example.com"))).status, 403);
+
   for (const auth of [undefined, token("other@example.com"), token("seojuyung@gmail.com", false)]) assert.equal((await write(year, auth)).status, 403);
   assert.equal((await fetch(`${base}/${year.id}`)).ok, true);
   console.log("Firestore entry validation, all seed years, maximum gallery/labels/links, and authorization checks passed.");

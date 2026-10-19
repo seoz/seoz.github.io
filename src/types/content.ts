@@ -61,6 +61,7 @@ export type TimelineHighlight = {
 };
 
 export type TimelineItem = {
+  images?: string[];
   id: string;
   title: LocalizedText;
   role: LocalizedText;

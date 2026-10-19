@@ -19,7 +19,7 @@ export function normalizeTalkItem(item: TimelineItem): TimelineItem {
     ? { ...item, highlights: talkEntries(item).map((entry) => ({ ...entry, tags: entry.tags ?? [...item.tags] })) } : item;
 }
 
-export function entryImages(entry: TimelineHighlight): string[] {
+export function entryImages(entry: Pick<TimelineHighlight, "images" | "imageUrl">): string[] {
   return entry.images ?? (entry.imageUrl ? [entry.imageUrl] : []);
 }
 
@@ -48,4 +48,9 @@ export function filterTalkEntries(item: TimelineItem, tag: string, query: string
   return { ...item, highlights: item.highlights.filter((entry) =>
     (tag === "all" || (entry.tags ?? item.tags).includes(tag)) &&
     (!query || [item.period, entry.title[language], entry.description[language]].join(" ").toLocaleLowerCase().includes(query))) };
+}
+
+export function validItemPhotos(item: Pick<TimelineItem, "images" | "imageUrl">): boolean {
+  const photos = entryImages(item);
+  return photos.length <= 6 && photos.every((url) => url.length <= 2048 && /^(https?:\/\/[^\s]+|\/[a-zA-Z0-9_][a-zA-Z0-9_./-]*)$/.test(url));
 }
