@@ -519,24 +519,24 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
       </section>
 
       <section className="border-y border-[var(--line)] bg-[var(--surface-soft)]">
-        <div className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px bg-[var(--line)] md:grid-cols-3">
-          <div className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
-            <p className="text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">30+</p>
-            <p className="max-w-28 text-right text-sm font-bold leading-5 text-[var(--muted)] lg:text-base">{copy.stats[0]}</p>
+        <div className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px bg-[var(--line)] sm:grid-cols-2">
+          <div className="flex min-h-28 flex-wrap items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
+            <p className="whitespace-nowrap text-[clamp(2rem,3vw,3.5rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">{copy.experienceDuration}</p>
+            <p className="ml-auto max-w-28 text-right text-sm font-bold leading-5 text-[var(--muted)] lg:text-base">{copy.stats[0]}</p>
           </div>
 
-          <div className="grid min-h-28 grid-cols-[minmax(0,1fr)_minmax(0,.95fr)] items-center gap-5 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
+          <div className={`grid min-h-28 ${language === "ko" ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)]" : "grid-cols-[minmax(0,1fr)_minmax(0,.95fr)]"} items-center gap-5 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8`}>
             <div>
-              <p className="text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">{googleYears}+</p>
+              <p className={`whitespace-nowrap ${language === "ko" ? "text-[clamp(1.5rem,2.4vw,2.5rem)]" : "text-[clamp(2.5rem,4vw,4rem)]"} font-black leading-none tracking-[-0.06em] text-[var(--accent)]`}>{googleYears}{copy.yearsOrMore}</p>
               <p className="mt-1.5 text-sm font-black leading-5 text-[var(--ink)]">{copy.stats[1]}</p>
             </div>
             <div className="grid gap-3 border-l border-[var(--line-strong)] pl-4">
-              <div className="flex items-baseline justify-between gap-2">
+              <div className={`flex ${language === "ko" ? "flex-col items-end gap-1 text-right" : "flex-wrap items-baseline justify-between gap-2"}`}>
                 <p className="text-2xl font-black leading-none text-[var(--ink)]">6</p>
                 <p className="max-w-20 text-right text-[11px] font-bold leading-4 text-[var(--muted)]">{copy.stats[2]}</p>
               </div>
-              <div className="flex items-baseline justify-between gap-2">
-                <p className="text-2xl font-black leading-none text-[var(--ink)]">6+</p>
+              <div className={`flex ${language === "ko" ? "flex-col items-end gap-1 text-right" : "flex-wrap items-baseline justify-between gap-2"}`}>
+                <p className={`whitespace-nowrap ${language === "ko" ? "text-lg" : "text-2xl"} font-black leading-none text-[var(--ink)]`}>6{copy.yearsOrMore}</p>
                 <p className="max-w-20 text-right text-[11px] font-bold leading-4 text-[var(--muted)]">{copy.stats[3]}</p>
               </div>
             </div>
@@ -544,16 +544,12 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
 
 
 
-          <div className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
-            <p className="text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">3,250+</p>
-            <p className="max-w-28 text-right text-sm font-bold leading-5 text-[var(--muted)] lg:text-base">{copy.stats[5]}</p>
-          </div>
+
         </div>
-          <dl className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px border-t border-[var(--line)] bg-[var(--line)] sm:grid-cols-3" aria-label={copy.talkMetricsLabel}>
+          <dl className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px border-t border-[var(--line)] bg-[var(--line)] sm:grid-cols-2" aria-label={copy.talkMetricsLabel}>
             {[
               [talkEngagementMetrics.talksLecturesPresentations, copy.talkMetricTalks],
-              [talkEngagementMetrics.interviewsMedia, copy.talkMetricMedia],
-              [talkEngagementMetrics.panelsRoundtables, copy.talkMetricPanels],
+              ["3,250+", copy.stats[5]],
             ].map(([value, label]) => (
               <div key={label} className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
                 <dt className="order-2 max-w-40 text-right text-xs font-bold leading-5 text-[var(--muted)]">{label}</dt>
@@ -706,9 +702,6 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
                   : `${items.length}${copy.archiveEntries}`;
                 const talkMetrics = [
                   [talkEngagementMetrics.talksLecturesPresentations, copy.talkMetricTalks],
-                  [talkEngagementMetrics.interviewsMedia, copy.talkMetricMedia],
-                  [talkEngagementMetrics.panelsRoundtables, copy.talkMetricPanels],
-                  [talkEngagementMetrics.mentoringSessions, copy.talkMetricMentoring],
                 ] as const;
 
                 return (
@@ -736,11 +729,11 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
                       </span>
                     </div>
                     {isTalksSection && (
-                      <div className="grid grid-cols-2 border-b border-[var(--line)] bg-[var(--surface)] sm:grid-cols-4" aria-label={copy.talkMetricsLabel}>
-                        {talkMetrics.map(([value, label], metricIndex) => (
+                      <div className="border-b border-[var(--line)] bg-[var(--surface)]" aria-label={copy.talkMetricsLabel}>
+                        {talkMetrics.map(([value, label]) => (
                           <div
                             key={label}
-                            className={`px-5 py-4 sm:px-6 ${metricIndex % 2 === 1 ? "border-l border-[var(--line)]" : ""} ${metricIndex > 1 ? "border-t border-[var(--line)] sm:border-t-0" : ""} ${metricIndex > 0 ? "sm:border-l sm:border-[var(--line)]" : ""}`}
+                            className="px-5 py-4 sm:px-6"
                           >
                             <p className="text-2xl font-black leading-none tracking-[-0.045em]" style={{ color: sectionAccent }}>{value}+</p>
                             <p className="mt-1.5 text-[11px] font-bold leading-4 text-[var(--muted)]">{label}</p>
