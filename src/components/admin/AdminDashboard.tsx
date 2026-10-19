@@ -586,10 +586,10 @@ export function AdminDashboard() {
             <div className="admin-modal-header"><div><p className="section-eyebrow">Timeline editor</p><h2 id="timeline-editor-title">{itemDraft.id ? "Edit item" : "New item"}</h2></div><button className="icon-button" type="button" onClick={() => setItemDraft(null)} aria-label="Close"><X size={17} /></button></div>
             <div className="admin-modal-body space-y-6">
               <Field label="Section"><select className="admin-input" value={itemDraft.section} onChange={(event) => setItemDraft({ ...itemDraft, section: event.target.value })}>{orderedSections.map((section) => <option key={section.id} value={section.id}>{section.title.en}</option>)}</select></Field>
-              <LocalizedFields label="Title" value={itemDraft.title} onChange={(title) => setItemDraft({ ...itemDraft, title })} />
               <Field label="Date / period"><input className="admin-input" value={itemDraft.period} onChange={(event) => setItemDraft({ ...itemDraft, period: event.target.value })} placeholder="2026-08-25 or 2015 — Present" /></Field>
-              <LocalizedFields label="Role" value={itemDraft.role} onChange={(role) => setItemDraft({ ...itemDraft, role })} />
               <LocalizedFields label="Organization / event" value={itemDraft.organization} onChange={(organization) => setItemDraft({ ...itemDraft, organization })} />
+              <LocalizedFields label="Role" value={itemDraft.role} onChange={(role) => setItemDraft({ ...itemDraft, role })} />
+              <LocalizedFields label="Team" value={itemDraft.title} onChange={(title) => setItemDraft({ ...itemDraft, title })} />
               <LocalizedFields label="Location" value={itemDraft.location} onChange={(location) => setItemDraft({ ...itemDraft, location })} />
               <LocalizedFields label="Description (Markdown)" value={itemDraft.description} onChange={(description) => setItemDraft({ ...itemDraft, description })} multiline />
               <fieldset className="border border-[var(--line)] bg-[var(--surface-soft)] p-4 sm:p-5">

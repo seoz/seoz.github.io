@@ -154,11 +154,11 @@ function TimelineCard({
               </span>
           )}
           <h3 className="text-balance text-xl font-black leading-tight tracking-[-0.03em] text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] md:text-2xl">
-            {localize(item.title, language)}
+            {localize(isCareerItem ? item.role : item.title, language)}
           </h3>
           {isCareerItem ? (
             <div className="mt-2 flex flex-wrap items-center gap-2.5">
-              <p className="text-xs font-bold text-[var(--ink)] sm:text-sm">{localize(item.role, language)}</p>
+              <p className="text-xs font-bold text-[var(--ink)] sm:text-sm">{localize(item.title, language)}</p>
             </div>
           ) : (
             <p className="mt-1.5 text-xs font-bold text-[var(--ink)] sm:text-sm">
