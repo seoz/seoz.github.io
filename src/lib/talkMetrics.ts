@@ -1,12 +1,11 @@
 import type { LocalizedText, TimelineItem } from "@/src/types/content";
 
-function primaryFormat(entry: LocalizedText) {
-  const text = `${entry.en} ${entry.ko}`;
-  if (/\b(panel(?:ist)?s?|round[ -]?tables?)\b|패널|간담회/i.test(text)) return "panelsRoundtables";
-  if (/\b(interviews?|media|documentar(?:y|ies)|filmed|video)\b|인터뷰|다큐멘터리|영상\s*출연/i.test(text)) return "interviewsMedia";
-  if (/\bmentor(?:ing)?\b|멘토링/i.test(text)) return "mentoringSessions";
-  return "talksLecturesPresentations";
-}
+const categoryLabels = {
+  talksLecturesPresentations: ["lecture", "presentation", "talk", "panel", "roundtable"],
+  interviewsMedia: ["interview", "media"],
+  panelsRoundtables: ["panel", "roundtable"],
+  mentoringSessions: ["mentoring"],
+} as const;
 
 function descriptionEntries(item: TimelineItem): LocalizedText[] {
   const bullets = (text: string) => text.split("\n").filter((line) => /^\s*(?:[-*+] |\d+[.)] )/.test(line)).map((line) => line.replace(/^\s*(?:[-*+] |\d+[.)] )/, "").trim());
@@ -16,7 +15,7 @@ function descriptionEntries(item: TimelineItem): LocalizedText[] {
   return Array.from({ length: Math.max(en.length, ko.length) }, (_, index) => ({ en: en[index] ?? "", ko: ko[index] ?? "" }));
 }
 
-/** Count documented entries once, using the same live records displayed in the archive. */
+/** Count each engagement once; category totals follow label IDs and may overlap. */
 export function getTalkMetrics(timeline: TimelineItem[]) {
   const metrics = { engagements: 0, activeYears: 0, talksLecturesPresentations: 0, interviewsMedia: 0, panelsRoundtables: 0, mentoringSessions: 0 };
   const years = new Set<string>();
@@ -24,10 +23,12 @@ export function getTalkMetrics(timeline: TimelineItem[]) {
     const year = item.period.match(/\b(?:19|20)\d{2}\b/)?.[0];
     if (year) years.add(year);
     // Highlights replace the Markdown description in the archive; never count both.
-    const entries = item.highlights !== undefined ? item.highlights.map((highlight) => highlight.title) : descriptionEntries(item);
+    const entries = item.highlights !== undefined ? item.highlights.map((highlight) => ({ title: highlight.title, tags: highlight.tags ?? item.tags })) : descriptionEntries(item).map((title) => ({ title, tags: item.tags }));
     for (const entry of entries) {
-      if (!entry.en.trim() && !entry.ko.trim()) continue;
-      metrics[primaryFormat(entry)] += 1;
+      if (!entry.title.en.trim() && !entry.title.ko.trim()) continue;
+      for (const category of Object.keys(categoryLabels) as Array<keyof typeof categoryLabels>) {
+        if (categoryLabels[category].some((label) => entry.tags.includes(label))) metrics[category] += 1;
+      }
       metrics.engagements += 1;
     }
   }
