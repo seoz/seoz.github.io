@@ -1,7 +1,7 @@
 import type { LocalizedText, TimelineItem } from "@/src/types/content";
 
 const categoryLabels = {
-  talksLecturesPresentations: ["lecture", "presentation", "talk", "panel", "roundtable"],
+  talksLecturesPresentations: ["lecture", "presentation", "talk", "panel", "roundtable", "interview"],
   interviewsMedia: ["interview", "media"],
   panelsRoundtables: ["panel", "roundtable"],
   mentoringSessions: ["mentoring"],

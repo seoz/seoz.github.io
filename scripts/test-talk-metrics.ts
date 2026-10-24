@@ -6,7 +6,7 @@ import type { TimelineItem } from "../src/types/content";
 const record: TimelineItem = { ...seedContent.timeline.find((item) => item.section === "talks")!, highlights: undefined, description: { en: "", ko: "" } };
 const highlight = (tags: string[], en = "Video interview panel mentoring", ko = "인터뷰 패널 멘토링") => ({ id: "entry", tags, title: { en, ko }, description: { en: "", ko: "" }, imageUrl: "", links: [] });
 const metrics = getTalkMetrics([{ ...record, highlights: [highlight(["lecture", "presentation"]), highlight(["interview"]), highlight(["panel"]), highlight(["mentoring"])] }]);
-assert.deepEqual(metrics, { engagements: 4, activeYears: 1, talksLecturesPresentations: 2, interviewsMedia: 1, panelsRoundtables: 1, mentoringSessions: 1 });
+assert.deepEqual(metrics, { engagements: 4, activeYears: 1, talksLecturesPresentations: 3, interviewsMedia: 1, panelsRoundtables: 1, mentoringSessions: 1 });
 assert.equal(getTalkMetrics([{ ...record, section: "career", highlights: [highlight(["lecture"])] }]).engagements, 0);
 const unclassified = getTalkMetrics([{ ...record, highlights: [highlight([])] }]);
 assert.equal(unclassified.engagements, 1);
@@ -32,3 +32,4 @@ assert.ok(getTalkMetrics(seedContent.timeline).talksLecturesPresentations > 0, "
 console.log("Label-based metrics checks passed: overlaps, deduplication, missing labels, legacy fallback, live edits, bilingual records, and seed content.");
 
 assert.equal(getTalkMetrics([{ ...record, highlights: [highlight(["panel", "roundtable"])] }]).talksLecturesPresentations, 1, "panel and roundtable labels count once in combined speaking metric");
+assert.equal(getTalkMetrics([{ ...record, highlights: [highlight(["interview"]), highlight(["interview", "lecture", "panel"]), highlight(["media"])] }]).talksLecturesPresentations, 2, "interviews count in the combined metric without overlap or unrelated media entries");
