@@ -170,3 +170,5 @@ Engagement statistics use detailed-line label IDs rather than title text: `lectu
 The public speaking metric combines talks, lectures, presentations, panels, and roundtables, counting each line once across these labels. Its Korean label is “발표·강연·패널·간담회”. The separate panel/roundtable tile is removed from both statistics areas. The archive breakdown shows only the combined speaking metric; the hero places it beside open-source commits.
 
 The hero statistics use two columns per row: software experience and employer tenure above, combined speaking engagements and open-source commits below. The interviews/media tile is removed. On narrow screens the four cells stack in that reading order; each value keeps its localized label.
+
+Hero statistic accent values share `clamp(2rem, 3.2vw, 3rem)` (32–48px with a default 16px root), including software duration, Google tenure, speaking count, and commits. Supporting labels and tenure figures use larger type for readability. Employer tenure keeps Google left and supporting experience right; cells allow wrapping where needed on narrow screens.

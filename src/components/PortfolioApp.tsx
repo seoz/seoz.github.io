@@ -521,23 +521,23 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
       <section className="border-y border-[var(--line)] bg-[var(--surface-soft)]">
         <div className="mx-auto grid max-w-[1480px] grid-cols-1 gap-px bg-[var(--line)] sm:grid-cols-2">
           <div className="flex min-h-28 flex-wrap items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
-            <p className="whitespace-nowrap text-[clamp(2rem,3vw,3.5rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">{copy.experienceDuration}</p>
-            <p className="ml-auto max-w-28 text-right text-sm font-bold leading-5 text-[var(--muted)] lg:text-base">{copy.stats[0]}</p>
+            <p className="whitespace-nowrap text-[clamp(2rem,3.2vw,3rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">{copy.experienceDuration}</p>
+            <p className="ml-auto max-w-28 text-right text-base font-bold leading-6 text-[var(--muted)] lg:text-lg">{copy.stats[0]}</p>
           </div>
 
-          <div className={`grid min-h-28 ${language === "ko" ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)]" : "grid-cols-[minmax(0,1fr)_minmax(0,.95fr)]"} items-center gap-5 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8`}>
+          <div className="grid min-h-28 grid-cols-[auto_minmax(0,1fr)] items-center gap-3 bg-[var(--surface)] px-5 py-5 sm:gap-4 lg:px-8">
             <div>
-              <p className={`whitespace-nowrap ${language === "ko" ? "text-[clamp(1.5rem,2.4vw,2.5rem)]" : "text-[clamp(2.5rem,4vw,4rem)]"} font-black leading-none tracking-[-0.06em] text-[var(--accent)]`}>{googleYears}{copy.yearsOrMore}</p>
-              <p className="mt-1.5 text-sm font-black leading-5 text-[var(--ink)]">{copy.stats[1]}</p>
+              <p className="whitespace-nowrap text-[clamp(2rem,3.2vw,3rem)] font-black leading-none tracking-[-0.06em] text-[var(--accent)]">{googleYears}{copy.yearsOrMore}</p>
+              <p className="mt-1.5 text-base font-black leading-6 text-[var(--ink)]">{copy.stats[1]}</p>
             </div>
             <div className="grid gap-3 border-l border-[var(--line-strong)] pl-4">
               <div className={`flex ${language === "ko" ? "flex-col items-end gap-1 text-right" : "flex-wrap items-baseline justify-between gap-2"}`}>
-                <p className="text-2xl font-black leading-none text-[var(--ink)]">6</p>
-                <p className="max-w-20 text-right text-[11px] font-bold leading-4 text-[var(--muted)]">{copy.stats[2]}</p>
+                <p className="text-[26px] font-black leading-none text-[var(--ink)]">6</p>
+                <p className="max-w-24 text-right text-[13px] font-bold leading-5 text-[var(--muted)]">{copy.stats[2]}</p>
               </div>
               <div className={`flex ${language === "ko" ? "flex-col items-end gap-1 text-right" : "flex-wrap items-baseline justify-between gap-2"}`}>
-                <p className={`whitespace-nowrap ${language === "ko" ? "text-lg" : "text-2xl"} font-black leading-none text-[var(--ink)]`}>6{copy.yearsOrMore}</p>
-                <p className="max-w-20 text-right text-[11px] font-bold leading-4 text-[var(--muted)]">{copy.stats[3]}</p>
+                <p className={`whitespace-nowrap ${language === "ko" ? "text-xl" : "text-[26px]"} font-black leading-none text-[var(--ink)]`}>6{copy.yearsOrMore}</p>
+                <p className="max-w-24 text-right text-[13px] font-bold leading-5 text-[var(--muted)]">{copy.stats[3]}</p>
               </div>
             </div>
           </div>
@@ -551,9 +551,9 @@ export function PortfolioApp({ previewContent }: PortfolioAppProps) {
               [talkEngagementMetrics.talksLecturesPresentations, copy.talkMetricTalks],
               ["3,250+", copy.stats[5]],
             ].map(([value, label]) => (
-              <div key={label} className="flex min-h-28 items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
-                <dt className="order-2 max-w-40 text-right text-xs font-bold leading-5 text-[var(--muted)]">{label}</dt>
-                <dd className="order-1 text-[clamp(2.5rem,4vw,4rem)] font-black leading-none tracking-[-0.04em] text-[var(--accent)]">{value}</dd>
+              <div key={label} className="flex min-h-28 flex-wrap items-center justify-between gap-4 bg-[var(--surface)] px-5 py-5 sm:px-7 lg:px-8">
+                <dt className="order-2 max-w-44 text-right text-sm font-bold leading-6 text-[var(--muted)]">{label}</dt>
+                <dd className="order-1 text-[clamp(2rem,3.2vw,3rem)] font-black leading-none tracking-[-0.04em] text-[var(--accent)]">{value}</dd>
               </div>
             ))}
           </dl>
